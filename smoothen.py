@@ -1,4 +1,6 @@
 #!/usr/bin/env python2
+import sys
+sys.path.insert(0, '/home/jonderw/Work/GPS/gpxpy')
 from os import listdir
 from os.path import isfile, join
 import matplotlib.pyplot as plt
