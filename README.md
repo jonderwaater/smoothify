@@ -11,7 +11,7 @@ If you suffer from jittery GPS data and from Strava consequently overestimating 
 Tha main script that runs the job as described above.
 
 -- exportgpx.py  
-Retrieves data from the latest Strava activity and writes it to a gpx file. As far as I know there is no other available method  to obtain a gpx file from the command line.
+Retrieves data from the latest Strava activity and writes it to a gpx file. As far as I know there is no other available method  to obtain a gpx file from the command line.  
 **Warning**:  
   This code has only been tested on activities recorded with the Strava Android App.  
   Currently only position, time and elevation data are extracted.  
