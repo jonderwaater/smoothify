@@ -21,7 +21,7 @@ Smoothens the data in the gpx file. Currently it uses a simple algorithm written
 -- stravaup.py  
 Uploads the the activity.  
 **Warning**:  
-  In order to upload the new gpx file to Strava, the old activity is deleted. You may loose data, so make backups if you are not sure.
+  In order to upload the new data to Strava, the old activity (duplicate) has to be deleted. You may loose data, so make backups if you are not sure.
 
 
 ## DEPENDENCIES
