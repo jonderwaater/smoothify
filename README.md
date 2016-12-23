@@ -10,15 +10,18 @@ Functionality of the scripts:
 Runs the job as described above.
 
 -- exportgpx.py  
-Retrieves data from the last Strava activity and writes it to a gpx file.
-Warning:  This code has only been tested on activities recorded with the Strava Android App.
-          Currently only position, time and elevation data are extracted.
+Retrieves data from the last Strava activity and writes it to a gpx file.  
+**Warning**:  
+  This code has only been tested on activities recorded with the Strava Android App.  
+  Currently only position, time and elevation data are extracted.
 
 -- smoothen.py  
 Smoothens the data in the gpx file. Currently it uses a simple algorithm written by myself that interpolates between sets of 9 points. More advanced algorithms may be implemented in the future, but it's already a significant improvement over untreated data.
 
 -- stravaup.py  
-Uploads the the activity.
+Uploads the the activity.  
+**Warning**:  
+  In order to upload the new gpx file to Strava, the old activity is deleted. You may loose data, so make backups if you are not sure.
 
 
 ## DEPENDENCIES
