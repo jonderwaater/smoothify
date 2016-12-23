@@ -26,7 +26,7 @@ Uploads the the activity.
   In order to upload the new data to Strava, the old activity (duplicate) has to be deleted. You may lose data, so make backups if you are not sure.
 
 
-## DEPENDENCIES
+## Dependencies
 
 The code requires libraries from  
 https://github.com/hozn/stravalib  
