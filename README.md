@@ -1,16 +1,17 @@
 # strava-smooth
 
-## INTRODUCTION
+#### Export data from the latest Strava activity to a gpx file, smoothen the GPS data, and re-upload the activity.
 
-Export data from the last Strava activity to a gpx file, smoothen the GPS data, and re-upload the activity.
+If you suffer from jittery GPS data and from Strava consequently overestimating your athletic abelities, this software is meant to address that issue.
 
-Functionality of the scripts:
+
+## The scripts
 
 -- strava-smooth.py  
-Runs the job as described above.
+Tha main script that runs the job as described above.
 
 -- exportgpx.py  
-Retrieves data from the last Strava activity and writes it to a gpx file.  
+Retrieves data from the latest Strava activity and writes it to a gpx file.  
 **Warning**:  
   This code has only been tested on activities recorded with the Strava Android App.  
   Currently only position, time and elevation data are extracted.  
@@ -22,7 +23,7 @@ Smoothens the data in the gpx file. Currently it uses a simple algorithm written
 -- stravaup.py  
 Uploads the the activity.  
 **Warning**:  
-  In order to upload the new data to Strava, the old activity (duplicate) has to be deleted. You may loose data, so make backups if you are not sure.
+  In order to upload the new data to Strava, the old activity (duplicate) has to be deleted. You may lose data, so make backups if you are not sure.
 
 
 ## DEPENDENCIES
@@ -30,7 +31,7 @@ Uploads the the activity.
 The code requires libraries from  
 https://github.com/hozn/stravalib  
 https://github.com/tkrajina/gpxpy  
-For installation directions I refer to the respective repositories.  
+For installation instructions I refer to the respective repositories.  
 Gpxpy is used to play with gpx coordinates. Stravalib is used to communicate with the Strava API.
 
 You need an access token. You can generate it on https://stravacli-dlenski.rhcloud.com/. The code expects the token to be saved according to the instructions on that page.
