@@ -39,9 +39,7 @@ Code has been shamelessly copied from
 https://github.com/dlenski/stravacli  
 in order to download and upload Strava activities. Because of relatively large modifications I copied the code. I might prepare a pull request, and if accepted I'll refer to it as a true dependency.
 
-Code presented in this post by Andy Kee
-http://andykee.com/visualizing-strava-tracks-with-python.html
-is used to read and plot gpx files.
+Code presented in this [blog post](http://andykee.com/visualizing-strava-tracks-with-python.html) by Andy Kee is used to read and plot gpx files.
 
 
 
