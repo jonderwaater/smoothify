@@ -2,7 +2,7 @@
 
 #### Export data from the latest Strava activity to a gpx file, smoothen the GPS data, and re-upload the activity.
 
-If you suffer from jittery GPS data and from Strava consequently overestimating your athletic abelities, this software is meant to address that issue.
+If you suffer from jittery GPS data and from Strava consequently overestimating your athletic abilities, this software is meant to address that issue.
 
 
 ## The scripts
