@@ -14,7 +14,7 @@ Retrieves data from the last Strava activity and writes it to a gpx file.
 **Warning**:  
   This code has only been tested on activities recorded with the Strava Android App.  
   Currently only position, time and elevation data are extracted.  
-  That means: no heartrate data, no kudos, no comments etc. This information from Strava activity will be lost in the upload process unless you back it up by hand.
+  That means: no heartrate data, no kudos, no comments etc. This information from the Strava activity will be lost in the upload process unless you back it up by hand.
 
 -- smoothen.py  
 Smoothens the data in the gpx file. Currently it uses a simple algorithm written by myself that interpolates between sets of 9 points. More advanced algorithms may be implemented in the future, but it's already a significant improvement over untreated data.
