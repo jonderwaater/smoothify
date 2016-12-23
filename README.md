@@ -35,6 +35,8 @@ Gpxpy is used to play with gpx coordinates. Stravalib is used to communicate wit
 You need an access token. You can generate it on https://stravacli-dlenski.rhcloud.com/. The code expects the token to be saved according to the instructions on that page.
 
 
+OTHER SOURCES:  
+
 Code has been shamelessly copied from  
 https://github.com/dlenski/stravacli  
 in order to download and upload Strava activities. Because of relatively large modifications I copied the code. I might prepare a pull request, and if accepted I'll refer to it as a true dependency.
