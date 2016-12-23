@@ -16,12 +16,7 @@ def smoothen(activity,graph=True):
     lon = []
     latsmooth = []
     lonsmooth = []
-    
-    fig = plt.figure(facecolor = '0.05')
-    ax = plt.Axes(fig, [0., 0., 1., 1.], )
-    ax.set_aspect('equal')
-    ax.set_axis_off()
-    fig.add_axes(ax)
+
     
     nsection=9
     
@@ -85,7 +80,12 @@ def smoothen(activity,graph=True):
         file.write(gpx_file_smooth_data)
     
     
-    if graph :
+    if graph :    
+        fig = plt.figure(facecolor = '0.05')
+        ax = plt.Axes(fig, [0., 0., 1., 1.], )
+        ax.set_aspect('equal')
+        ax.set_axis_off()
+        fig.add_axes(ax)
         plt.plot(lon, lat, '-', lonsmooth, latsmooth, '-') #, xp, p(xp), '-')
         filename = activity + '.png'
         plt.savefig(filename, facecolor = fig.get_facecolor(), bbox_inches='tight', pad_inches=0, dpi=900)
