@@ -47,7 +47,8 @@ def main(arguments=""):
         args = p.parse_args()
     else :
         args = p.parse_args(arguments.split(" "))
-    
+
+
     if args.xml_desc:
         if args.title:
             p.error('argument -T/--title not allowed with argument -x/--xml-desc')
@@ -133,9 +134,13 @@ def main(arguments=""):
             uf.seek(0, 0)
             if ext.lower()=='.gpx':
                 x = etree.parse(uf)
-                nametag, desctag = x.find("{*}name"), x.find("{*}desc")
-                title = nametag and nametag.text
-                desc = desctag and desctag.text
+                root = x.getroot()
+                for child in root :
+                    for subchild in child :
+                        if subchild.tag.find("name")!=-1 :
+                            title = subchild.text
+                        if subchild.tag.find("desc")!=-1 :
+                            desc = subchild.text
             elif ext.lower()=='.tcx':
                 x = etree.parse(uf)
                 notestag = x.find("{*}Activities/{*}Activity/{*}Notes")
@@ -144,6 +149,7 @@ def main(arguments=""):
         else:
             title = args.title
             desc = args.description
+        
     
         # upload activity
         duplicate = False

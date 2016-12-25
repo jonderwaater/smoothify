@@ -36,10 +36,11 @@ def insert_date_stamp(file,date_stamp):
     return
 
 
-def start_segment(file,name):
+def start_segment(file,name,desc):
     file.write(" </metadata>\n")
     file.write(" <trk>\n")
     file.write('  <name>{}</name>\n'.format(name))
+    file.write('  <desc>{}</desc>\n'.format(desc))
     file.write("  <trkseg>\n")
     return
 
@@ -133,7 +134,7 @@ def extractgpx(activity_id=0):
         datestring=timestamp.split(" ")[0].split("-")  
         timestring=timestamp.split(" ")[1].split(":")
     
-        start_segment(file,activity.name)
+        start_segment(file,activity.name,activity.description)
     
         streams = client.get_activity_streams(activity.id, types=types, resolution='high')
         latlng = streams['latlng'].data
@@ -156,8 +157,7 @@ def extractgpx(activity_id=0):
     
         end_segment(file)
 
-        return name
-
+        return activity
 
 if __name__ == "__main__":
 
