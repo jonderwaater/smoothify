@@ -100,7 +100,5 @@ if __name__ == "__main__":
         if len(sys.argv) == 3 :
             graph = sys.argv[2]
 
-    print(sys.argv)
-
     smoothen(activity, graph)
 

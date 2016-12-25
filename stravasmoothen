@@ -15,8 +15,6 @@ activity = extractgpx.extractgpx(args.activity_id)
 
 activity_name = activity.name.replace(" ","_")
 
-print(activity.description)
-
 if not activity_name == "" :
     smoothen.smoothen(activity_name,args.no_graph)
     options = "-P -x"

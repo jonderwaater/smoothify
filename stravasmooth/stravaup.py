@@ -118,7 +118,6 @@ def main(arguments=""):
         else:
             base, ext = os.path.splitext(f.name if args.type is None else 'activity.'+args.type)
             # autodetect based on extensions
-            print("type!!!! ",args.type)
             if ext.lower()=='.gz':
                 base, ext = os.path.splitext(base)
                 # un-gzip it in order to parse it
@@ -142,6 +141,8 @@ def main(arguments=""):
                             title = subchild.text
                         if subchild.tag.find("desc")!=-1 :
                             desc = subchild.text
+                            if desc == None :
+                                desc = ""
             elif ext.lower()=='.tcx':
                 x = etree.parse(uf)
                 notestag = x.find("{*}Activities/{*}Activity/{*}Notes")
