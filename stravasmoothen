@@ -11,9 +11,11 @@ p.add_argument('-d', '--dry-run'  , action='store_true' , help="do not overwrite
 args = p.parse_args()
 
 filename = extractgpx.main()
-smoothen.smoothen(filename,args.no_graph)
-options = "-P"
-if not args.dry_run :
-    options = options + " -o"
-if not args.no_upload :
-    stravaup.main(options+" "+filename+"_smooth.gpx")
+
+if not filename == "" :
+    smoothen.smoothen(filename,args.no_graph)
+    options = "-P"
+    if not args.dry_run :
+        options = options + " -o"
+    if not args.no_upload :
+        stravaup.main(options+" "+filename+"_smooth.gpx")

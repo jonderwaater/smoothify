@@ -2,7 +2,8 @@
 from __future__ import print_function
 
 from stravalib import Client, exc
-from sys import stderr, stdin
+#from sys import stderr, stdin
+import sys
 from tempfile import NamedTemporaryFile
 import webbrowser, os.path, ConfigParser, gzip
 import argparse
@@ -16,11 +17,6 @@ except ImportError:
     import xml.etree.ElementTree as etree
 
 #####
-
-
-
-p = argparse.ArgumentParser(description='''Downloads last gpx activity from Strava.''')
-p.add_argument('-d', '--no-delete', action='store_true', help="Don't delete original activity.")
 
 
 def intro(file):
@@ -86,7 +82,8 @@ def strava_connect():
         except requests.exceptions.ConnectionError:
             print("Could not connect to Strava API")
         except Exception as e:
-            print("NOT AUTHORIZED, GET YOUR TOKEN FROM https://stravacli-dlenski.rhcloud.com/", file=stderr)
+            print("NOT AUTHORIZED, GET YOUR TOKEN FROM https://stravacli-dlenski.rhcloud.com/ AND SAVE THE THREE LINES TO FILE ~/.stravacli", file=stderr)
+            return 0
         else:
             if not cp.has_section('API'):
                 cp.add_section('API')
@@ -99,62 +96,81 @@ def strava_connect():
     return client
 
 
-def main():
-    print("Retreiving last activity ")
+def extractgpx(activity_id=0):
+
+    print(sys.argv)
+
+    if len(sys.argv) == 2 :
+        activity_id = sys.argv[1]
+
+    if activity_id == 0 :
+        print("Retreiving last activity")
+    else :
+        print("Retreiving activity",activity_id)
     client = strava_connect()
-    activities = client.get_activities(limit=1)
+    if client == 0 :
+        return ""
+    
+    if activity_id == 0 :
+        activities = client.get_activities(limit=1)
+        print(activities)
+        for i in activities :
+            activity = i
+
+    else :
+        activity = client.get_activity(activity_id)
+
     #assert len(list(activities)) == 1
     
     types = ['time', 'latlng', 'altitude' ]
-    for activity in activities:
     
-        name = activity.name
-        name = name.replace(" ","_")
+    name = activity.name
+    name = name.replace(" ","_")
     
-        with open(name+".gpx", 'w') as file :
-            file.close
+    with open(name+".gpx", 'w') as file :
+        file.close
     
-        with open(name+".gpx", 'a') as file :
+    with open(name+".gpx", 'a') as file :
     
-            intro(file)
+        intro(file)
     
-            timestamp=str(activity.start_date)
+        timestamp=str(activity.start_date)
     
-            insert_date_stamp(file,timestamp)
+        insert_date_stamp(file,timestamp)
     
-            timestamp = timestamp.replace("+00:00","")
+        timestamp = timestamp.replace("+00:00","")
     
-            datestring=timestamp.split(" ")[0].split("-")  
-            timestring=timestamp.split(" ")[1].split(":")
+        datestring=timestamp.split(" ")[0].split("-")  
+        timestring=timestamp.split(" ")[1].split(":")
     
-            start_segment(file,activity.name)
+        start_segment(file,activity.name)
     
-            streams = client.get_activity_streams(activity.id, types=types, resolution='high')
-            latlng = streams['latlng'].data
-            time = streams['time'].data
-            altitude = streams['altitude'].data
+        streams = client.get_activity_streams(activity.id, types=types, resolution='high')
+        latlng = streams['latlng'].data
+        time = streams['time'].data
+        altitude = streams['altitude'].data
     
-            start_date = datetime.datetime(int(datestring[0]), int(datestring[1]), int(datestring[2]), int(timestring[0]), int(timestring[1]), int(timestring[2]))
+        start_date = datetime.datetime(int(datestring[0]), int(datestring[1]), int(datestring[2]), int(timestring[0]), int(timestring[1]), int(timestring[2]))
     
-            print("Processing activity \"",name,"\" from date",start_date)
+        print("Processing activity \"",name,"\" from date",start_date)
     
-            info = np.transpose(latlng)
+        info = np.transpose(latlng)
     
-            for it in range(0,len(info[0])):
-                lat = info[0][it]
-                lon = info[1][it]
-                t = start_date + datetime.timedelta(seconds=time[it])
-                alt = altitude[it]
-                insert_datapoint(file,lat,lon,alt,t)
+        for it in range(0,len(info[0])):
+            lat = info[0][it]
+            lon = info[1][it]
+            t = start_date + datetime.timedelta(seconds=time[it])
+            alt = altitude[it]
+            insert_datapoint(file,lat,lon,alt,t)
     
     
-            end_segment(file)
+        end_segment(file)
 
-            return name
+        return name
 
 
 if __name__ == "__main__":
-    main()
+    extractgpx()
 
 #####
 

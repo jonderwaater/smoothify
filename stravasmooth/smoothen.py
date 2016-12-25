@@ -9,6 +9,7 @@ from numpy import pi, r_
 import shutil
 import re
 import fileinput
+import sys
 
 def smoothen(activity,graph=True):
 
@@ -16,7 +17,6 @@ def smoothen(activity,graph=True):
     lon = []
     latsmooth = []
     lonsmooth = []
-
     
     nsection=9
     
@@ -91,3 +91,16 @@ def smoothen(activity,graph=True):
         plt.savefig(filename, facecolor = fig.get_facecolor(), bbox_inches='tight', pad_inches=0, dpi=900)
 
     return
+
+
+if __name__ == "__main__":
+
+    if len(sys.argv) > 1 :
+        activity = sys.argv[1]
+        if len(sys.argv) == 3 :
+            graph = sys.argv[2]
+
+    print(sys.argv)
+
+    smoothen(activity, graph)
+
