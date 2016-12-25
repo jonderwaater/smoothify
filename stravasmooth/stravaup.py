@@ -8,6 +8,7 @@ import webbrowser, os.path, ConfigParser, gzip
 import argparse
 from cStringIO import StringIO
 import requests
+import gpxpy
 
 try:
     from lxml import etree
@@ -133,16 +134,13 @@ def main(arguments=""):
         if args.xml_desc:
             uf.seek(0, 0)
             if ext.lower()=='.gpx':
-                x = etree.parse(uf)
-                root = x.getroot()
-                for child in root :
-                    for subchild in child :
-                        if subchild.tag.find("name")!=-1 :
-                            title = subchild.text
-                        if subchild.tag.find("desc")!=-1 :
-                            desc = subchild.text
-                            if desc == None :
-                                desc = ""
+
+                gpx = gpxpy.parse(f)
+
+                for track in gpx.tracks :
+                    title = track.name
+                    desc = track.description
+
             elif ext.lower()=='.tcx':
                 x = etree.parse(uf)
                 notestag = x.find("{*}Activities/{*}Activity/{*}Notes")
@@ -151,8 +149,8 @@ def main(arguments=""):
         else:
             title = args.title
             desc = args.description
-        
-    
+
+
         # upload activity
         duplicate = False
         try:
