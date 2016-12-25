@@ -37,6 +37,7 @@ That means: no heartrate data, kudos, comments, photos etc. This information fro
   -u, --no-upload       do not upload smoothened data to Strava.
   -d, --dry-run         do not overwrite original activity when attempting to
                         upload to Strava.
+  -c, --cleanup         delete created files after uploading activity.
 
 ```
 
