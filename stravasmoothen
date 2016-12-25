@@ -15,8 +15,8 @@ filename = extractgpx.extractgpx(args.activity_id)
 
 if not filename == "" :
     smoothen.smoothen(filename,args.no_graph)
-    options = "-P  -A run"
+    options = "-P -A run"
     if not args.dry_run :
-        options = options + "  -o"
+        options = options + " -o"
     if not args.no_upload :
         stravaup.main(options+" "+filename+"_smooth.gpx")
