@@ -31,7 +31,7 @@ That means: no heartrate data, kudos, comments, photos etc. This information fro
 ### Options
 ```
   -h, --help            show this help message and exit
-  -a, --activity-id     Activity id, latest activity is taken by default.
+  -a, --activity-id     activity id; latest activity is taken by default.
   -g, --no-graph        do not create png file showing original and smoothened
                         data.
   -u, --no-upload       do not upload smoothened data to Strava.
