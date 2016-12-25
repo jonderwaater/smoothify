@@ -117,6 +117,7 @@ def main(arguments=""):
         else:
             base, ext = os.path.splitext(f.name if args.type is None else 'activity.'+args.type)
             # autodetect based on extensions
+            print("type!!!! ",args.type)
             if ext.lower()=='.gz':
                 base, ext = os.path.splitext(base)
                 # un-gzip it in order to parse it
