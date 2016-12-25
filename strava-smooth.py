@@ -6,14 +6,14 @@ import ConfigParser
 import argparse
 
 p = argparse.ArgumentParser(description='''Smoothen latest activity on Strava.''')
-p.add_argument('-g', '--graph'    , action='store_false', help="do not create png file showing original and smoothened data.")
-p.add_argument('-u', '--no-upload', action='store_true', help="do not upload smoothened data to Strava.")
-p.add_argument('-d', '--dry-run'  , action='store_true', help="do not overwrite original activity when attempting to upload to Strava.")
+p.add_argument('-g', '--no-graph' , action='store_false', help="do not create png file showing original and smoothened data.")
+p.add_argument('-u', '--no-upload', action='store_true' , help="do not upload smoothened data to Strava.")
+p.add_argument('-d', '--dry-run'  , action='store_true' , help="do not overwrite original activity when attempting to upload to Strava.")
 
 args = p.parse_args()
 
 filename = extractgpx.main()
-smoothen.smoothen(filename,args.graph)
+smoothen.smoothen(filename,args.no_graph)
 options = "-P"
 if not args.dry_run :
     options = options + " -o"
