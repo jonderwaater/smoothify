@@ -2,12 +2,14 @@
 from stravasmooth import extractgpx,smoothen,stravaup
 import ConfigParser
 import argparse
+import os
 
 p = argparse.ArgumentParser(description='''Smoothen activity on Strava.''')
-p.add_argument('-a', '--activity-id' , default=0 , help="Activity id, latest activity is taken by default.")
+p.add_argument('-a', '--activity-id' , default=0 , help="activity id, latest activity is taken by default.")
 p.add_argument('-g', '--no-graph'    , action='store_false', help="do not create png file showing original and smoothened data.")
 p.add_argument('-u', '--no-upload'   , action='store_true' , help="do not upload smoothened data to Strava.")
 p.add_argument('-d', '--dry-run'     , action='store_true' , help="do not overwrite original activity when attempting to upload to Strava.")
+p.add_argument('-c', '--cleanup'     , action='store_true' , help="delete created files after uploading activity.")
 
 args = p.parse_args()
 
@@ -23,3 +25,8 @@ if not activity_name == "" :
         options = options + " -o"
     if not args.no_upload :
         stravaup.main(options+" "+activity_name+"_smooth.gpx")
+        
+if args.cleanup :
+    os.remove(activity_name+".gpx")
+    os.remove(activity_name+"_smooth.gpx")
+    os.remove(activity_name+".png")
