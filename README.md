@@ -1,40 +1,53 @@
 # stravasmooth
 
-#### Export data from the latest Strava activity to a gpx file, smoothen the GPS data, and re-upload the activity.
+#### Export data from your Strava activity to a gpx file, smoothen the GPS data, and re-upload the activity.
 
-If you suffer from jittery GPS data and from Strava consequently overestimating your athletic abilities, this software is meant to address that issue.
+If you suffer from jittery GPS data and from Strava consequently overestimating your athletic abilities (especially for runs), this software is meant to address that issue.
 
+## General usage
+Installation:
+````bash
+pip install git+https://github.com/jonderwaater/stravasmooth  
+````
+You might have to install gpxpy separately (pip install git+https://github.com/tkrajina/gpxpy)
+
+You need an access token. You can generate it on https://stravacli-dlenski.rhcloud.com/. Store the token in ~/.stravacli as is described above the generated token.
+
+Run the software:
+````bash
+$ stravasmoothen
+````
+Warning:  
+This code has only been tested on activities recorded with the Strava Android App.  
+Currently only position, time and elevation data are extracted, as well as the activity type, name and description.
+That means: no heartrate data, kudos, comments, photos etc. This information from the Strava activity will be lost in the upload process unless you back it up by hand.
+
+### Options
+```
+  -h, --help            show this help message and exit
+  -a, --activity-id     Activity id, latest activity is taken by default.
+  -g, --no-graph        do not create png file showing original and smoothened
+                        data.
+  -u, --no-upload       do not upload smoothened data to Strava.
+  -d, --dry-run         do not overwrite original activity when attempting to
+                        upload to Strava.
+
+```
 
 ## The scripts
 
--- stravasmooth.py  
-Tha main script that runs the job as described above.
-
 -- exportgpx.py  
 Retrieves data from the latest Strava activity and writes it to a gpx file. As far as I know there is no other available method  to obtain a gpx file from the command line.  
-**Warning**:  
-  This code has only been tested on activities recorded with the Strava Android App.  
-  Currently only position, time and elevation data are extracted.  
-  That means: no heartrate data, no kudos, no comments etc. This information from the Strava activity will be lost in the upload process unless you back it up by hand.
 
 -- smoothen.py  
 Smoothens the data in the gpx file. Currently it uses a simple algorithm written by myself that interpolates between sets of 9 points. More advanced algorithms may be implemented in the future, but it's already a significant improvement over untreated data.
 
 -- stravaup.py  
 Uploads the the activity.  
-**Warning**:  
-  In order to upload the new data to Strava, the old activity (duplicate) has to be deleted. You may lose data, so make backups if you are not sure.
 
 
 ## Dependencies
-
-The code requires libraries from  
-https://github.com/hozn/stravalib  
-https://github.com/tkrajina/gpxpy  
-For installation instructions I refer to the respective repositories.  
-Gpxpy is used to play with gpx coordinates. Stravalib is used to communicate with the Strava API.
-
-You need an access token. You can generate it on https://stravacli-dlenski.rhcloud.com/. The code expects the token to be saved according to the instructions on that page.
+stravalib, matplotlib, gpxpy and others
 
 
 OTHER SOURCES:  
