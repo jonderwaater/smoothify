@@ -20,7 +20,7 @@ mod_distutilscore.setup(
         "Programming Language :: Python :: 2",
         "Programming Language :: Python :: 3",
     ],
-    scripts=['stravasmoothen.py']
+    scripts=['stravasmoothen']
     #entry_points={
     #    'console_scripts': [
     #        'stravasmooth=stravasmooth:main',
