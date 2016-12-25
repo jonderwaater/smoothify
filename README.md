@@ -18,6 +18,8 @@ Run the software:
 ````bash
 $ stravasmoothen
 ````
+Your original activity will be replaced automatically. 
+
 In the directory where you run stravasmoothen the following files are created:  
 [Activity name].gpx           - the gpx file of your original activity  
 [Activity name]_smooth.gpx    - the gpx file with smoothened data  
