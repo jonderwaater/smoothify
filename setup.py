@@ -9,7 +9,7 @@ mod_distutilscore.setup(
     author='Jaap Onderwaater',
     author_email='jonderwaater@gmail.com',
     url='https://github.com/jonderwaater/strava-smooth',
-    packages=find_packages(),
+    packages=['strava_smooth',],
     install_requires=['stravalib'],
     classifiers=[
         "Programming Language :: Python",
