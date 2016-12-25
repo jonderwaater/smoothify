@@ -98,13 +98,6 @@ def strava_connect():
 
 def extractgpx(activity_id=0):
 
-    if len(sys.argv) == 2 :
-        activity_id = sys.argv[1]
-
-    if activity_id == 0 :
-        print("Retreiving last activity")
-    else :
-        print("Retreiving activity",activity_id)
     client = strava_connect()
     if client == 0 :
         return ""
@@ -167,7 +160,18 @@ def extractgpx(activity_id=0):
 
 
 if __name__ == "__main__":
-    extractgpx()
+
+    activity_id = 0
+
+    if len(sys.argv) == 2 :
+        activity_id = sys.argv[1]
+
+    if activity_id == 0 :
+        print("Retreiving last activity")
+    else :
+        print("Retreiving activity",activity_id)
+
+    extractgpx(activity_id)
 
 #####
 
