@@ -1,6 +1,10 @@
 import distutils.core as mod_distutilscore
 from setuptools import setup, find_packages
 
+# To use a consistent encoding
+from codecs import open
+from os import path
+
 mod_distutilscore.setup(
     name='stravasmooth',
     version='0.0.1',
@@ -17,4 +21,9 @@ mod_distutilscore.setup(
         "Programming Language :: Python :: 3",
     ],
     scripts=['stravasmooth.py']
+    #entry_points={
+    #    'console_scripts': [
+    #        'stravasmooth=stravasmooth:main',
+    #    ],
+    #},
 )
