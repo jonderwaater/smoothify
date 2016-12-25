@@ -1,4 +1,4 @@
-# strava-smooth
+# stravasmooth
 
 #### Export data from the latest Strava activity to a gpx file, smoothen the GPS data, and re-upload the activity.
 
@@ -7,7 +7,7 @@ If you suffer from jittery GPS data and from Strava consequently overestimating 
 
 ## The scripts
 
--- strava-smooth.py  
+-- stravasmooth.py  
 Tha main script that runs the job as described above.
 
 -- exportgpx.py  
