@@ -1,6 +1,6 @@
 # stravasmooth
 
-#### Export data from your Strava activity to a gpx file, smoothen the GPS data, and re-upload the activity.
+#### Obtains a gpx file from your Strava activity and re-uploads after applying a smoothening algorithm.
 
 If you suffer from jittery GPS data and from Strava consequently overestimating your athletic abilities (especially for runs), this software is meant to address that issue.
 
@@ -18,6 +18,11 @@ Run the software:
 ````bash
 $ stravasmoothen
 ````
+In the directory where you run stravasmoothen the following files are created:  
+[Activity name].gpx           - the gpx file of your original activity  
+[Activity name]_smooth.gpx    - the gpx file with smoothened data  
+[Activity name].png           - plot comparing the original and the smoothened data  
+
 Warning:  
 This code has only been tested on activities recorded with the Strava Android App.  
 Currently only position, time and elevation data are extracted, as well as the activity type, name and description.
