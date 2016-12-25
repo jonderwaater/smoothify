@@ -46,7 +46,7 @@ def main(arguments=""):
     if arguments == "" :  
         args = p.parse_args()
     else :
-        args = p.parse_args(arguments.split(" "))
+        args = p.parse_args(arguments.split("  "))
     
     if args.xml_desc:
         if args.title:
