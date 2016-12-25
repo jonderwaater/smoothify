@@ -86,7 +86,9 @@ def smoothen(activity,graph=True):
         ax.set_aspect('equal')
         ax.set_axis_off()
         fig.add_axes(ax)
-        plt.plot(lon, lat, '-', lonsmooth, latsmooth, '-') #, xp, p(xp), '-')
+        #plt.plot(lonsmooth, latsmooth, '-', lon, lat, '.') #, xp, p(xp), '-')
+        plt.plot(lonsmooth, latsmooth, '-',zorder=1) #, xp, p(xp), '-')
+        plt.scatter(lon, lat, s=1, color='red', edgecolor='',zorder=2) #, xp, p(xp), '-')
         filename = activity + '.png'
         plt.savefig(filename, facecolor = fig.get_facecolor(), bbox_inches='tight', pad_inches=0, dpi=900)
 
@@ -97,6 +99,7 @@ if __name__ == "__main__":
 
     if len(sys.argv) > 1 :
         activity = sys.argv[1]
+        graph = True
         if len(sys.argv) == 3 :
             graph = sys.argv[2]
 
