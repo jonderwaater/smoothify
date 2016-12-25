@@ -4,8 +4,8 @@
 
 If you suffer from jittery GPS data and from Strava consequently overestimating your athletic abilities (especially for runs), this software is meant to address that issue.
 
-## General usage
-Installation:
+## Installation
+
 ````bash
 pip install git+https://github.com/jonderwaater/stravasmooth  
 ````
@@ -13,6 +13,7 @@ You might have to install gpxpy separately (pip install git+https://github.com/t
 
 You need an access token. You can generate it on https://stravacli-dlenski.rhcloud.com/. Store the token in ~/.stravacli as is described above the generated token.
 
+## General usage
 Run the software:
 ````bash
 $ stravasmoothen
