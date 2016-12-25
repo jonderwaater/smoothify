@@ -10,7 +10,7 @@ p.add_argument('-d', '--dry-run'  , action='store_true' , help="do not overwrite
 
 args = p.parse_args()
 
-filename = extractgpx.main()
+filename = extractgpx.extractgpx()
 
 if not filename == "" :
     smoothen.smoothen(filename,args.no_graph)
