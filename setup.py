@@ -14,7 +14,7 @@ mod_distutilscore.setup(
     author_email='jonderwaater@gmail.com',
     url='https://github.com/jonderwaater/stravasmooth',
     packages=['stravasmooth',],
-    install_requires=['stravalib','gpxpy','ConfigParser'],
+    install_requires=['stravalib','gpxpy','numpy','configparser'],
     classifiers=[
         "Programming Language :: Python",
         "Programming Language :: Python :: 2",
