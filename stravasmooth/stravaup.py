@@ -4,12 +4,20 @@ from __future__ import print_function
 from stravalib import Client, exc
 from sys import stderr, stdin
 from tempfile import NamedTemporaryFile
-import webbrowser, os.path, ConfigParser, gzip
+import webbrowser
+import os.path
+import gzip
 import argparse
 from cStringIO import StringIO
 import requests
 import gpxpy
 
+try:
+    import configparser
+    cp = configparser.configparser()
+except:
+    import ConfigParser
+    cp = ConfigParser.ConfigParser()
 try:
     from lxml import etree
 except ImportError:
@@ -64,7 +72,6 @@ def main(arguments=""):
     if args.env:
         cat = os.environ.get('ACCESS_TOKEN')
     else:
-        cp = ConfigParser.ConfigParser()
         cp.read(os.path.expanduser('~/.stravacli'))
         cat = None
         if cp.has_section('API'):

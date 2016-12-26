@@ -1,6 +1,5 @@
 #!/usr/bin/env python2
 from stravasmooth import extractgpx,smoothen,stravaup
-import ConfigParser
 import argparse
 import os
 

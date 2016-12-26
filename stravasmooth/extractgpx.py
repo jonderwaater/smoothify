@@ -5,12 +5,19 @@ from stravalib import Client, exc
 #from sys import stderr, stdin
 import sys
 from tempfile import NamedTemporaryFile
-import webbrowser, os.path, ConfigParser, gzip
+import webbrowser
+import os.path
 import argparse
 import numpy as np
 from cStringIO import StringIO
 import requests
 import datetime
+try:
+    import configparser
+    cp = configparser.configparser()
+except:
+    import ConfigParser
+    cp = ConfigParser.ConfigParser()
 try:
     from lxml import etree
 except ImportError:
@@ -70,7 +77,6 @@ def end_segment(file):
 
 def strava_connect():
     cid = 3163 # CLIENT_ID
-    cp = ConfigParser.ConfigParser()
     cp.read(os.path.expanduser('~/.stravacli'))
     cat = None
     if cp.has_section('API'):
