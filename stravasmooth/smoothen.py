@@ -3,7 +3,6 @@ from os import listdir
 from os.path import isfile, join
 import gpxpy
 import gpxpy.geo as mod_geo
-from numpy import pi, r_
 import shutil
 import re
 import fileinput
