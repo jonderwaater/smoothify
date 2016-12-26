@@ -43,6 +43,9 @@ That means: no heartrate data, kudos, comments, photos etc. This information fro
 
 ```
 
+### On Android
+The program will also run on Android on the [Termux](https://play.google.com/store/apps/details?id=com.termux&hl=en) app. The installation method is identical to the one described above. Because of limited availability of packages it is required to run with option -g.
+
 ## The scripts
 
 -- exportgpx.py  
