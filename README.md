@@ -52,7 +52,7 @@ The program will also run on Android on the [Termux](https://play.google.com/sto
 Retrieves data from the latest Strava activity and writes it to a gpx file. As far as I know there is no other available method  to obtain a gpx file from the command line.  
 
 -- smoothen.py  
-Smoothens the data in the gpx file. Currently it uses a simple algorithm written by myself that interpolates between sets of 9 points. More advanced algorithms may be implemented in the future, but it's already a significant improvement over untreated data.
+Smoothens the data in the gpx file. Currently it uses a simple algorithm that takes running average of 9 points, in steps of 1 point. More advanced algorithms may be implemented in the future, but it's already a significant improvement over untreated data.
 
 -- stravaup.py  
 Uploads the the activity.  
