@@ -44,6 +44,7 @@ def smoothen(activity,graph=True,algo=0):
     
     # this is the smoothening algorithm
     for sectionstart in range(0,len(lon)-1-nsection):
+        centslice = int(sectionstart+(nsection-1)/2)
         lonslice = lon[sectionstart:sectionstart+nsection]
         latslice = lat[sectionstart:sectionstart+nsection]
 
@@ -58,12 +59,12 @@ def smoothen(activity,graph=True,algo=0):
                 d = mod_geo.distance(lonslice[0]+stepsize*i,p(lonslice[0]+stepsize*i),None,lonslice[(nsection-1)/2],latslice[(nsection-1)/2],None)
                 if d < dmin:
                     dmin = d
-                    lonsmooth[sectionstart+(nsection-1)/2] = lonslice[0]+stepsize*i
-                    latsmooth[sectionstart+(nsection-1)/2] = p(lonslice[0]+stepsize*i)
+                    lonsmooth[centslice] = lonslice[0]+stepsize*i
+                    latsmooth[centslice] = p(lonslice[0]+stepsize*i)
 
         if int(algo) == 1 :
-            lonsmooth[int(sectionstart+(nsection-1)/2)] = sum(lonslice)/len(lonslice)
-            latsmooth[int(sectionstart+(nsection-1)/2)] = sum(latslice)/len(latslice)
+            lonsmooth[centslice] = sum(lonslice)/len(lonslice)
+            latsmooth[centslice] = sum(latslice)/len(latslice)
         
         
         for line in gpx_file_smooth:
@@ -72,11 +73,11 @@ def smoothen(activity,graph=True,algo=0):
                 thislat = float(linevalues[0])
                 thislon = float(linevalues[1])
     
-                data={lat[sectionstart+(nsection-1)/2],lon[sectionstart+(nsection-1)/2]}
+                data={lat[centslice],lon[centslice]}
     
-                if thislat == lat[sectionstart+(nsection-1)/2]:
-                    if thislon == lon[sectionstart+(nsection-1)/2]:
-                        newline = '   <trkpt lat="{0:.7f}" lon="{1:.7f}">\n'.format(latsmooth[sectionstart+(nsection-1)/2],lonsmooth[sectionstart+(nsection-1)/2])
+                if thislat == lat[centslice]:
+                    if thislon == lon[centslice]:
+                        newline = '   <trkpt lat="{0:.7f}" lon="{1:.7f}">\n'.format(latsmooth[centslice],lonsmooth[centslice])
                         gpx_file_smooth_data = gpx_file_smooth_data.replace(line,newline)
                         break
                             
