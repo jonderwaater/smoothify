@@ -8,7 +8,6 @@ from tempfile import NamedTemporaryFile
 import webbrowser
 import os.path
 import argparse
-from cStringIO import StringIO
 import requests
 import datetime
 try:

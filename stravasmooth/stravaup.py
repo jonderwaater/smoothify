@@ -8,7 +8,8 @@ import webbrowser
 import os.path
 import gzip
 import argparse
-from cStringIO import StringIO
+#from cStringIO import StringIO
+from io import StringIO
 import requests
 import gpxpy
 
