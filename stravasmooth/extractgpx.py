@@ -146,16 +146,12 @@ def extractgpx(activity_id=0):
     
         print("Processing activity \"",name,"\" from date",start_date)
     
-        info = zip(*latlng)
-        #info = np.transpose(latlng)
-    
-        for it in range(0,len(info[0])):
-            lat = info[0][it]
-            lon = info[1][it]
+        for it in range(0,len(latlng)):
+            lat = latlng[it][0]
+            lon = latlng[it][1]
             t = start_date + datetime.timedelta(seconds=time[it])
             alt = altitude[it]
             insert_datapoint(file,lat,lon,alt,t)
-    
     
         end_segment(file)
 
