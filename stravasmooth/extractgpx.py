@@ -119,9 +119,6 @@ def extractgpx(activity_id=0):
     name = name.replace(" ","_")
     
     with open(name+".gpx", 'w') as file :
-        file.close
-    
-    with open(name+".gpx", 'a') as file :
     
         intro(file)
     
