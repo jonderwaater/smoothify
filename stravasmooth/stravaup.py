@@ -160,7 +160,6 @@ def main(arguments=""):
             desc = args.description
 
 
-        return
         # upload activity
         duplicate = False
         try:
