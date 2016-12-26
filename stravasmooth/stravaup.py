@@ -143,7 +143,8 @@ def main(arguments=""):
             uf.seek(0, 0)
             if ext.lower()=='.gpx':
 
-                gpx = gpxpy.parse(f)
+                gpx_file = open(f.name, 'r')
+                gpx = gpxpy.parse(gpx_file)
 
                 for track in gpx.tracks :
                     title = track.name
@@ -159,6 +160,7 @@ def main(arguments=""):
             desc = args.description
 
 
+        return
         # upload activity
         duplicate = False
         try:
