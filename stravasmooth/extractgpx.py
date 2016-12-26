@@ -8,7 +8,6 @@ from tempfile import NamedTemporaryFile
 import webbrowser
 import os.path
 import argparse
-import numpy as np
 from cStringIO import StringIO
 import requests
 import datetime
@@ -148,7 +147,8 @@ def extractgpx(activity_id=0):
     
         print("Processing activity \"",name,"\" from date",start_date)
     
-        info = np.transpose(latlng)
+        info = zip(*latlng)
+        #info = np.transpose(latlng)
     
         for it in range(0,len(info[0])):
             lat = info[0][it]
