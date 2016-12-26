@@ -62,8 +62,8 @@ def smoothen(activity,graph=True,algo=0):
                     latsmooth[sectionstart+(nsection-1)/2] = p(lonslice[0]+stepsize*i)
 
         if int(algo) == 1 :
-            lonsmooth[sectionstart+(nsection-1)/2] = sum(lonslice)/len(lonslice)
-            latsmooth[sectionstart+(nsection-1)/2] = sum(latslice)/len(latslice)
+            lonsmooth[int(sectionstart+(nsection-1)/2)] = sum(lonslice)/len(lonslice)
+            latsmooth[int(sectionstart+(nsection-1)/2)] = sum(latslice)/len(latslice)
         
         
         for line in gpx_file_smooth:
