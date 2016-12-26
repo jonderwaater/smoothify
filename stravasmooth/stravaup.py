@@ -15,7 +15,7 @@ import gpxpy
 
 try:
     import configparser
-    cp = configparser.configparser()
+    cp = configparser.ConfigParser()
 except:
     import ConfigParser
     cp = ConfigParser.ConfigParser()
