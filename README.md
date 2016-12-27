@@ -1,11 +1,10 @@
 # stravasmooth
 
-#### Obtains a gpx file from your Strava activity and re-uploads after applying a smoothening algorithm.
-
 If you suffer from jittery GPS data and from Strava consequently overestimating your athletic abilities (especially for runs), run this software for a more realistic account.
 
 ![alt text](https://github.com/jonderwaater/stravasmooth/blob/master/example.png "Before & after")
 
+The activity data is exported from your Strava account to a gpx file and re-uploaded after applying a smoothening algorithm.
 
 ## Installation
 
