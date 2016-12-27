@@ -37,7 +37,6 @@ def insert_date_stamp(file,date_stamp):
     date_stamp = date_stamp.replace("+00:00","Z")
     file.write(date_stamp)
     file.write("</time>\n")
-    file.close
     return
 
 
