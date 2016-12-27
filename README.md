@@ -4,6 +4,9 @@
 
 If you suffer from jittery GPS data and from Strava consequently overestimating your athletic abilities (especially for runs), run this software for a more realistic account.
 
+![alt text](https://github.com/jonderwaater/stravasmooth/blob/master/example.png "Before & after")
+
+
 ## Installation
 
 ````bash
