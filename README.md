@@ -17,7 +17,7 @@ You might have to install gpxpy separately (pip install git+https://github.com/t
 You need an access token. You can generate it on https://stravacli-dlenski.rhcloud.com/. Store the token in ~/.stravacli as described above the generated token.
 
 ## General usage
-Run the software:
+When your activity is uploaded to your account, run the software in a shell:
 ````bash
 $ stravasmoothen
 ````
