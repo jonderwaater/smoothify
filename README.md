@@ -11,7 +11,7 @@ pip install git+https://github.com/jonderwaater/stravasmooth
 ````
 You might have to install gpxpy separately (pip install git+https://github.com/tkrajina/gpxpy)
 
-You need an access token. You can generate it on https://stravacli-dlenski.rhcloud.com/. Store the token in ~/.stravacli as is described above the generated token.
+You need an access token. You can generate it on https://stravacli-dlenski.rhcloud.com/. Store the token in ~/.stravacli as described above the generated token.
 
 ## General usage
 Run the software:
@@ -32,14 +32,13 @@ That means: no heartrate data, kudos, comments, photos etc. This information fro
 
 ### Options
 ```
-  -h, --help            show this help message and exit
-  -a, --activity-id     activity id; latest activity is taken by default.
-  -g, --no-graph        do not create png file showing original and smoothened
-                        data.
-  -u, --no-upload       do not upload smoothened data to Strava.
-  -d, --dry-run         do not overwrite original activity when attempting to
-                        upload to Strava.
-  -c, --cleanup         delete created files after uploading activity.
+  -h        , --help                show this help message and exit
+  -a <id>   , --activity-id <id>    activity id; latest activity is taken by default.
+  -g        , --no-graph            do not create png file showing original and smoothened data.
+  -u        , --no-upload           do not upload smoothened data to Strava.
+  -d        , --dry-run             do not overwrite original activity when attempting to upload to Strava.
+  -c        , --cleanup             delete created files after uploading activity.  
+  -s <algo> , --algo <algo>         smoothening algorithm. running average (-s=1) is default.
 
 ```
 
