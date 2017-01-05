@@ -1,0 +1,23 @@
+
+<html>
+
+<head>
+  Hi {{  athlete_firstname  }}, good to see you
+</head>
+<body>
+  
+  </br>
+  <pre>Which activity do you want to process?</pre></br>
+
+  <button type="button" onclick="location.href='{{ activityurl }}'">Latest activity</button></br></br>
+
+  <pre>Activity with id (the number at the end of the url when you visit your activity in the browser): </pre></br></br>
+
+<form action="/activity/" method="post">
+    {% csrf_token %}
+    {{ form }}
+    <input type="submit" value="Submit" />
+</form>
+
+</body>
+</html>

@@ -7,30 +7,32 @@ import shutil
 import re
 import fileinput
 import sys
+import compare
+import tempfile
+import time
 
-def smoothen(activity,graph=True,algo=0):
+
+def smoothen(infile,algo=1):
+    infile.seek(0)
+    gpx_file_data=infile.read()
+    return gpx_file_data
+
+
+def smoothengpx(gpx_file_smooth_data,algo=1):
+
+    s = time.time()
 
     lat = []
     lon = []
-    latsmooth = []
-    lonsmooth = []
     
     nsection=9
     
-    gpx_filename=activity+".gpx"
-    gpx_filename_out=activity+"_smooth.gpx"
-    
-    gpx_file = open(gpx_filename, 'r')
-    gpx = gpxpy.parse(gpx_file)
-    
-    shutil.copyfile(gpx_filename,gpx_filename_out)
-    
-    gpx_file_smooth = open(gpx_filename_out, 'r')
-    
-    gpx_file_smooth_data = None 
-    with open(gpx_filename_out, 'r') as file :
-        gpx_file_smooth_data = file.read()
-    
+    infile = tempfile.TemporaryFile()
+    infile.write(gpx_file_smooth_data)
+    infile.seek(0)
+    gpx = gpxpy.parse(infile)
+    infile.seek(0)
+
     
     for track in gpx.tracks:
         for segment in track.segments:
@@ -42,6 +44,7 @@ def smoothen(activity,graph=True,algo=0):
     lonsmooth = list(lon)
     
     
+    #infile.seek(0)
     # this is the smoothening algorithm
     for sectionstart in range(0,len(lon)-1-nsection):
         centslice = int(sectionstart+(nsection-1)/2)
@@ -67,7 +70,7 @@ def smoothen(activity,graph=True,algo=0):
             latsmooth[centslice] = sum(latslice)/len(latslice)
         
         
-        for line in gpx_file_smooth:
+        for line in infile:
             linevalues = re.findall("\d+\.\d+",line)
             if(len(linevalues)==2):
                 thislat = float(linevalues[0])
@@ -80,29 +83,45 @@ def smoothen(activity,graph=True,algo=0):
                         newline = '   <trkpt lat="{0:.7f}" lon="{1:.7f}">\n'.format(latsmooth[centslice],lonsmooth[centslice])
                         gpx_file_smooth_data = gpx_file_smooth_data.replace(line,newline)
                         break
+
+    print("!!!!!smoothen",time.time()-s)
+    return gpx_file_smooth_data
                             
-    
-    with open(gpx_filename_out, 'w') as file :
-        file.write(gpx_file_smooth_data)
-    
-    
-    if graph :    
-        import plot
-        plot.plot(activity,lon,lat,lonsmooth,latsmooth)
+
+def writeoutput(filename,gpx) :
+    with open(filename, 'w') as file :
+        file.write(gpx)
 
 
-    return
+
+def getgpxinfile(filename) :
+    gpx_file = open(filename, 'r')
+    gpx = gpxpy.parse(gpx_file)
+    return gpx
+
+
+
+def getgpx(filename) :
+    filename.seek(0)
+    gpx = gpxpy.parse(filename)
+    return gpx
+
 
 
 if __name__ == "__main__":
 
     if len(sys.argv) > 1 :
         activity = sys.argv[1]
+        gpx_filename='{}.gpx'.format(activity)
+        infile = open(gpx_filename, 'r')
         graph = True
         if len(sys.argv) > 2 :
             graph = sys.argv[2]
         if len(sys.argv) == 4 :
             algo = sys.argv[3]
 
-    smoothen(activity, graph, algo)
+    gpxout = smoothen(infile)
+
+    writeoutput('{}_smooth.gpx'.format(activity), gpxout)
+
 

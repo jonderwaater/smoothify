@@ -5,11 +5,12 @@ from stravalib import Client, exc
 #from sys import stderr, stdin
 import sys
 from tempfile import NamedTemporaryFile
-import webbrowser
 import os.path
 import argparse
 import requests
 import datetime
+
+
 try:
     import configparser
     cp = configparser.ConfigParser()
@@ -70,43 +71,12 @@ def end_segment(file):
 
 #####
 
-# Authorize Strava
+def extractgpx(activity_id=None,client=None):
 
-def strava_connect():
-    cid = 3163 # CLIENT_ID
-    cp.read(os.path.expanduser('~/.stravacli'))
-    cat = None
-    if cp.has_section('API'):
-        cat = cp.get('API', 'ACCESS_TOKEN') if 'access_token' in cp.options('API') else None
-    
-    while True:
-        client = Client(cat)
-        try:
-            athlete = client.get_athlete()
-        except requests.exceptions.ConnectionError:
-            print("Could not connect to Strava API")
-        except Exception as e:
-            print("NOT AUTHORIZED, GET YOUR TOKEN FROM https://stravacli-dlenski.rhcloud.com/ AND SAVE THE THREE LINES TO FILE ~/.stravacli", file=stderr)
-            return 0
-        else:
-            if not cp.has_section('API'):
-                cp.add_section('API')
-            if not 'ACCESS_TOKEN' in cp.options('API') or cp.get('API', 'ACCESS_TOKEN', None)!=cat:
-                cp.set('API', 'ACCESS_TOKEN', cat)
-                cp.write(open(os.path.expanduser('~/.stravacli'),"w"))
-            break
-    
-    print("Authorized to access account of {} {} (id {:d}).".format(athlete.firstname, athlete.lastname, athlete.id))
-    return client
+    if client == None :
+        client = Client(access_token=os.environ['CLIENT_TOKEN'])
 
-
-def extractgpx(activity_id=0):
-
-    client = strava_connect()
-    if client == 0 :
-        return ""
-    
-    if activity_id == 0 :
+    if activity_id == None :
         activities = client.get_activities(limit=1)
         for i in activities :
             activity = i
@@ -118,10 +88,7 @@ def extractgpx(activity_id=0):
     
     types = ['time', 'latlng', 'altitude' ]
     
-    name = activity.name
-    name = name.replace(" ","_")
-    
-    with open(name+".gpx", 'w') as file :
+    with open('{}.gpx'.format(activity.id), 'w') as file :
     
         intro(file)
     
@@ -140,10 +107,11 @@ def extractgpx(activity_id=0):
         latlng = streams['latlng'].data
         time = streams['time'].data
         altitude = streams['altitude'].data
+        distance = streams['distance'].data
     
         start_date = datetime.datetime(int(datestring[0]), int(datestring[1]), int(datestring[2]), int(timestring[0]), int(timestring[1]), int(timestring[2]))
     
-        print("Processing activity \"",name,"\" from date",start_date)
+        print("Processing activity \"",activity.name,"\" from date",start_date)
     
         for it in range(0,len(latlng)):
             lat = latlng[it][0]
@@ -156,17 +124,18 @@ def extractgpx(activity_id=0):
 
         return activity
 
+
 if __name__ == "__main__":
 
-    activity_id = 0
+    activity_id = None
 
-    if len(sys.argv) == 2 :
+    if len(sys.argv) > 1 :
         activity_id = sys.argv[1]
 
-    if activity_id == 0 :
-        print("Retreiving last activity")
+    if activity_id == None :
+        print("Retrieving last activity")
     else :
-        print("Retreiving activity",activity_id)
+        print("Retrieving activity",activity_id)
 
     extractgpx(activity_id)
 
