@@ -41,9 +41,18 @@ def index(request):
     redirect_uri = request.build_absolute_uri('/token/')
     url = client.authorization_url(client_id=client_id, redirect_uri=redirect_uri, scope='view_private,write')
 
+    return render(request, 'index.html',{'url':url})
+
     response = HttpResponse()
-    response.write('<pre> Welcome to stravasmooth </pre> </br>')
-    response.write('<a href=' + url + '>Connect to Strava</a>')
+    #with open('stravasmooth_banner.png', "rb") as f:
+    #    response = HttpResponse(f.read(), content_type="image/png")
+    #response.write('<pre> Welcome to stravasmooth </pre> </br>')
+    #response.write(' <img src="/stravasmooth_banner.png" alt="stravasmooth"> ')
+    response.write('<img src="/stravasmooth/stravasmooth_banner.png">')
+    #with open('stravasmooth_banner.png', "rb") as f:
+    #    return HttpResponse(f.read(), content_type="image/png")
+    response.write('<a href=' + url + '>Connect to Strava</a></br></br>')
+    response.write('Web interface to <a href="https://github.com/jonderwaater/stravasmooth/">stravasmooth</a> by <a href="https://github.com/jonderwaater/">jonderwaater</a></br></br>')
     return response
 
 
@@ -52,8 +61,6 @@ def token(request):
 
     code = request.GET.get("code", None)
 
-    print("!!!!!!!!!!",code,os.environ['CLIENT_ID'],os.environ['CLIENT_SECRET'])
-    
     
     if not code:
         return HttpResponse('<a href='+reverse('index')+'>Failed, try again.</a>')
@@ -124,29 +131,19 @@ def waitprocess(request):
     jobid = request.session['SMOOTHENJOB_ID']
     job = queue.fetch_job(jobid)
     if job.result == None :
-        print("took 3")
         time.sleep(3)
         return HttpResponseRedirect('/waitprocess/')
 
-    s = time.time()
-    print("done1")
     smoothened_data = job.result
 
     smoothen.writeoutput('{}_smooth.gpx'.format(request.session['ACTIVITY_ID']),smoothened_data)
 
-    print("done2")
     gpxin  = smoothen.getgpxinfile('{}.gpx'.format(request.session['ACTIVITY_ID']))
     gpxout = smoothen.getgpxinfile('{}_smooth.gpx'.format(request.session['ACTIVITY_ID']))
-    print("done3")
 
     request.session['DISTANCE_OLD'], request.session['DISTANCE_NEW'] = compare.comparegpx(gpxin,gpxout)
 
-    print("done4")
-    print("uptoplot",time.time()-s)
-    s = time.time()
     compare.plot('{}.png'.format(request.session['ACTIVITY_ID']),gpxin,gpxout)
-    print("plot",time.time()-s)
-    print("done5")
     return HttpResponseRedirect('/overview/')
 
 
