@@ -1,15 +1,10 @@
 #!/usr/bin/env python2
-from os import listdir
-from os.path import isfile, join
 import gpxpy
 import gpxpy.geo as mod_geo
-import shutil
 import re
 import fileinput
 import sys
-import compare
 import tempfile
-import time
 
 
 def smoothen(infile,algo=1):
@@ -20,7 +15,6 @@ def smoothen(infile,algo=1):
 
 def smoothengpx(gpx_file_smooth_data,algo=1):
 
-    s = time.time()
 
     lat = []
     lon = []
@@ -84,7 +78,6 @@ def smoothengpx(gpx_file_smooth_data,algo=1):
                         gpx_file_smooth_data = gpx_file_smooth_data.replace(line,newline)
                         break
 
-    print("!!!!!smoothen",time.time()-s)
     return gpx_file_smooth_data
                             
 

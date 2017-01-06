@@ -169,6 +169,7 @@ def gpxout(request):
 
 def overview(request):
     timestamp = request.session['TIMESTAMP']
+    timestamp = timestamp.replace("+00:00","")
     distance  = float(request.session['DISTANCE_STRAVA'])
     distance_old  = request.session['DISTANCE_OLD']
     distance_new  = request.session['DISTANCE_NEW']

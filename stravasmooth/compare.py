@@ -1,7 +1,4 @@
-
 import gpxpy
-import gpxpy.geo as mod_geo
-
 
 
 def comparefiles(gpxf1,gpxf2) :

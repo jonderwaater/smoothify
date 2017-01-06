@@ -1,17 +1,23 @@
 
 <html>
+  <head>
+      {% load staticfiles %}
+        <link rel="shortcut icon" type="image/png" href="{% static "favicon.ico" %}"/>
+  </head>
 
-<head>
-  Hi {{  athlete_firstname  }}, good to see you
-</head>
 <body>
+
+    {% load staticfiles %}
+      <img src="{% static "stravasmooth_banner.png" %}" alt="stravasmooth"/></br></br>
+
+
+  Hi {{  athlete_firstname  }}, good to see you</br></br>
   
-  </br>
-  <pre>Which activity do you want to process?</pre></br>
+  Which activity do you want to process?</br></br>
 
   <button type="button" onclick="location.href='{{ activityurl }}'">Latest activity</button></br></br>
 
-  <pre>Activity with id (the number at the end of the url when you visit your activity in the browser): </pre></br></br>
+  Activity with id (the number at the end of the url when you visit your activity in the browser): </br></br>
 
 <form action="/activity/" method="post">
     {% csrf_token %}

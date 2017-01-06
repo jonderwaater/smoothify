@@ -1,12 +1,14 @@
 
 <html>
-<head>
-	Stravasmooth for Strava
-</head>
+  <head>
+      {% load staticfiles %}
+        <link rel="shortcut icon" type="image/png" href="{% static "favicon.ico" %}"/>
+  </head>
 <body>
-	
+  {% load staticfiles %}
+  <img src="{% static "stravasmooth_banner.png" %}" alt="stravasmooth"/></br></br>
 
-  <pre>Your activity {{ activity_name }} from {{timestamp}} has been processed.</pre></br>
+  Your activity "{{ activity_name }}" from {{timestamp}} has been processed.</br></br>
   
   <pre>Distances:</pre>
   <pre>Original on Strava : {{distance}} m</pre>
@@ -23,7 +25,7 @@
   <a href='{{ori}}'>See the original gpx</a></br>
   <a href='{{smo}}'>See the smoothened gpx</a></br>
 
-  {% if graph != '' %} <img src="{{ graph }}" alt="comparison" style="width:904px;height:628px;"> {% endif %}
+  {% if graph != '' %} <img src="{{ graph }}" alt="comparison" style="height:628px;"> {% endif %}
 
 
 </body>
