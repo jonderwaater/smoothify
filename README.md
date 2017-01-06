@@ -6,12 +6,16 @@ If you suffer from jittery GPS data and from Strava consequently overestimating 
 
 The activity data is exported from your Strava account to a gpx file and re-uploaded after applying a smoothening algorithm.
 
+## Web interface
+
+To smoothen your data through the web interface visit https://stravasmooth.herokuapp.com/. The generated information is not stored in a database.
+If you want to run the program on your own device follow the steps below.
+
 ## Installation
 
 ````bash
 pip install git+https://github.com/jonderwaater/stravasmooth  
 ````
-You might have to install gpxpy separately (pip install git+https://github.com/tkrajina/gpxpy)
 
 You need an access token. You can generate it on https://stravacli-dlenski.rhcloud.com/. Store the token in ~/.stravacli as described above the generated token.
 
