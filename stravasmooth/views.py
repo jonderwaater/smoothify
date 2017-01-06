@@ -52,6 +52,9 @@ def token(request):
 
     code = request.GET.get("code", None)
 
+    print("!!!!!!!!!!",code,os.environ['CLIENT_ID'],os.environ['CLIENT_SECRET'])
+    
+    
     if not code:
         return HttpResponse('<a href='+reverse('index')+'>Failed, try again.</a>')
     else :
