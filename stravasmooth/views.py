@@ -107,12 +107,12 @@ def process(request):
 
     athlete = activity.athlete
 
-    request.session['ACTIVITY_NAME'] = activity.name
-    request.session['TIMESTAMP']=str(activity.start_date)
-    request.session['DISTANCE_STRAVA']=float(activity.distance)
-    request.session['ACTIVITY_TYPE']=activity.type
-    request.session['ACTIVITY_PRIVATE']=activity.private
-    request.session['ACTIVITY_ID']=activity.id
+    request.session['ACTIVITY_NAME']     =        activity.name
+    request.session['TIMESTAMP']         =    str(activity.start_date)
+    request.session['DISTANCE_STRAVA']   =  float(activity.distance)
+    request.session['ACTIVITY_TYPE']     =        activity.type
+    request.session['ACTIVITY_PRIVATE']  =        activity.private
+    request.session['ACTIVITY_ID']       =        activity.id
 
 
     gpx_file = open('{}.gpx'.format(request.session['ACTIVITY_ID']), 'r')
