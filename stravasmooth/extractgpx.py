@@ -71,8 +71,7 @@ def end_segment(file):
 
 #####
 
-def extractgpx(activity_id=None,client=None):
-
+def getactivity(activity_id=None,client=None) :
     if client == None :
         client = Client(access_token=os.environ['CLIENT_TOKEN'])
 
@@ -82,10 +81,23 @@ def extractgpx(activity_id=None,client=None):
             activity = i
 
     else :
-        activity = client.get_activity(activity_id)
+        try :
+            activity = client.get_activity(activity_id)
+        except :
+            return int(0)
 
-    #assert len(list(activities)) == 1
-    
+    athlete = activity.athlete
+
+    if not athlete.is_authenticated_athlete() :
+        return int(1)
+
+
+    return activity
+
+
+
+def extractgpx(activity,client):
+
     types = ['time', 'latlng', 'altitude' ]
     
     with open('{}.gpx'.format(activity.id), 'w') as file :
@@ -122,7 +134,6 @@ def extractgpx(activity_id=None,client=None):
     
         end_segment(file)
 
-        return activity
 
 
 if __name__ == "__main__":
@@ -137,7 +148,12 @@ if __name__ == "__main__":
     else :
         print("Retrieving activity",activity_id)
 
-    extractgpx(activity_id)
+    activity = getactivity()
+
+    if activity.is_authenticated_athlete() :
+        extractgpx(client,activity)
+    else :
+        print("Activity does not belong to user")
 
 #####
 

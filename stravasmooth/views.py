@@ -44,13 +44,7 @@ def index(request):
     return render(request, 'index.html',{'url':url})
 
     response = HttpResponse()
-    #with open('stravasmooth_banner.png', "rb") as f:
-    #    response = HttpResponse(f.read(), content_type="image/png")
-    #response.write('<pre> Welcome to stravasmooth </pre> </br>')
-    #response.write(' <img src="/stravasmooth_banner.png" alt="stravasmooth"> ')
     response.write('<img src="/stravasmooth/stravasmooth_banner.png">')
-    #with open('stravasmooth_banner.png', "rb") as f:
-    #    return HttpResponse(f.read(), content_type="image/png")
     response.write('<a href=' + url + '>Connect to Strava</a></br></br>')
     response.write('Web interface to <a href="https://github.com/jonderwaater/stravasmooth/">stravasmooth</a> by <a href="https://github.com/jonderwaater/">jonderwaater</a></br></br>')
     return response
@@ -60,7 +54,6 @@ def index(request):
 def token(request):
 
     code = request.GET.get("code", None)
-
     
     if not code:
         return HttpResponse('<a href='+reverse('index')+'>Failed, try again.</a>')
@@ -76,15 +69,15 @@ def token(request):
         athlete = client.get_athlete()
         request.session['ATHLETE_FIRSTNAME'] = athlete.firstname
 
-        #request.session['CLIENT'] = client
-
+        request.session['ACTIVITY_ERROR']=None
         return HttpResponseRedirect('/activity/')
 
 
 
 def activity(request):
-        
+
     request.session['ACTIVITY_ID'] = None
+
     if request.method == 'POST':
         form = ActivityIdForm(request.POST)
         if form.is_valid():
@@ -93,7 +86,7 @@ def activity(request):
     else :
         form = ActivityIdForm()
 
-    return render(request, 'name.html', {'form': form,'athlete_firstname':request.session['ATHLETE_FIRSTNAME'],'activityurl':reverse('process')})
+    return render(request, 'name.html', {'form':form,'athlete_firstname':request.session['ATHLETE_FIRSTNAME'],'activityurl':reverse('process'),'activity_error':request.session['ACTIVITY_ERROR']})
 
 
 
@@ -101,9 +94,18 @@ def process(request):
 
     client = Client(request.session['CLIENT_TOKEN'])
 
-    #client = request.session['CLIENT']
+    activity = extractgpx.getactivity(request.session['ACTIVITY_ID'], client)
 
-    activity = extractgpx.extractgpx(request.session['ACTIVITY_ID'], client)
+    if activity == 0 :
+        request.session['ACTIVITY_ERROR']=0
+        return HttpResponseRedirect('/activity/')
+
+
+    if activity == 1 :
+        request.session['ACTIVITY_ERROR']=1
+        return HttpResponseRedirect('/activity/')
+
+    extractgpx.extractgpx(activity, client)
 
     athlete = activity.athlete
 
