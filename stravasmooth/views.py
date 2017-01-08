@@ -67,9 +67,6 @@ def token(request):
         os.environ['CLIENT_TOKEN'] = access_token
 
         athlete = client.get_athlete()
-        request.session['ATHLETE_FIRSTNAME'] = athlete.firstname
-
-        print("Logged in")
 
         request.session['ACTIVITY_ERROR']=None
         return HttpResponseRedirect('/activity/')
