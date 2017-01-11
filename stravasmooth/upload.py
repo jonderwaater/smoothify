@@ -49,7 +49,8 @@ def main(arguments=""):
 
     print "Uploading activity..."
 
-    client = Client(access_token=os.environ['STRAVASMOOTH_TOKEN'])
+    token = functions.gettoken()
+    client = Client(access_token=token)
                                                                   
     gpxfile, title, desc = functions.getgpxinfofilename(gpx_filename)
 

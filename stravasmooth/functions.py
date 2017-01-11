@@ -4,10 +4,10 @@ from datetime import datetime
 import xml.etree.ElementTree as ET
 import os
 
-def setenv():
+def gettoken():
     token=None
-    f = open(os.path.expanduser('~/.stravasmooth'),'r')
-    c = f.readlines()
+    with open(os.path.expanduser('~/.stravasmooth'), 'r') as f:
+        c = f.readlines()
     for line in c :
         words = line.split("=")
         if words[0] == "STRAVASMOOTH_TOKEN" :
@@ -77,10 +77,9 @@ def getarraysfile(gpxdata):
     return lat,lon,ele,time
 
 def getarraysfilename(gpxfilename):
-    infile = open(gpxfilename,'r')
-    gpxdata = infile.read()
+    with open(gpxfilename, 'r') as f:
+      gpxdata=f.read()
     lat,lon,ele,time = getarraysfile(gpxdata)
-    infile.seek(0,0)
     return lat,lon,ele,time
 
 def getdistancefilename(gpxfilename):
@@ -94,8 +93,9 @@ def plotfiles(outfile,infile1,infile2) :
 
 
 def getgpxinfofilename(gpxfilename):
-    infile = open(gpxfilename,'r')
-    gpxdata = infile.read()
+
+    with open(gpxfilename, 'r') as f:
+      gpxdata=f.read()
 
     root = ET.fromstring(gpxdata)
 

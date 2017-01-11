@@ -1,4 +1,5 @@
 from stravalib import Client, exc
+import functions
 #from sys import stderr, stdin
 import sys
 from tempfile import NamedTemporaryFile
@@ -70,7 +71,8 @@ def end_segment(file):
 
 def getactivity(activity_id=0,client=None) :
     if client == None :
-        client = Client(access_token=os.environ['STRAVASMOOTH_TOKEN'])
+        token = functions.gettoken()
+        client = Client(access_token=token)
 
     if activity_id == 0 :
         activities = client.get_activities(limit=1)

@@ -10,6 +10,7 @@ from django.core.urlresolvers import reverse_lazy
 urlpatterns = [
     url(r'^$', stravasmooth.views.index, name='index'),
     url(r'^token/$', stravasmooth.views.token, name='token'),
+    url(r'^mytoken/$', stravasmooth.views.mytoken, name='mytoken'),
     url(r'^image/$', stravasmooth.views.image, name='image'),
     url(r'^gpxin/$', stravasmooth.views.gpxin, name='gpxin'),
     url(r'^gpxout/$', stravasmooth.views.gpxout, name='gpxout'),

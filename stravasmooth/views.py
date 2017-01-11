@@ -45,14 +45,6 @@ def index(request):
 
     return render(request, 'index.html',{'url':url})
 
-    response = HttpResponse()
-    response.write('<img src="/stravasmooth/stravasmooth_banner.png">')
-    response.write('<a href=' + url + '>Connect to Strava</a></br></br>')
-    response.write('Web interface to <a href="https://github.com/jonderwaater/stravasmooth/">stravasmooth</a> by <a href="https://github.com/jonderwaater/">jonderwaater</a></br></br>')
-
-
-    return response
-
 
 
 def token(request):
@@ -76,6 +68,9 @@ def token(request):
         request.session['ACTIVITY_ERROR']=None
         return HttpResponseRedirect('/activity/')
 
+def mytoken(request):
+
+    return render(request, 'mytoken.html',{'token':request.session['STRAVASMOOTH_TOKEN']})
 
 
 def activity(request):
@@ -90,7 +85,7 @@ def activity(request):
     else :
         form = ActivityIdForm()
 
-    return render(request, 'name.html', {'form':form,'athlete_firstname':request.session['ATHLETE_FIRSTNAME'],'activityurl':reverse('process'),'activity_error':request.session['ACTIVITY_ERROR']})
+    return render(request, 'name.html', {'form':form,'athlete_firstname':request.session['ATHLETE_FIRSTNAME'],'activityurl':reverse('process'),'activity_error':request.session['ACTIVITY_ERROR'],'mytokenurl':reverse('mytoken')})
 
 
 

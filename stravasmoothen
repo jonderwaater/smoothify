@@ -14,9 +14,7 @@ p.add_argument('-s', '--algo'        , default=1           , help="smoothening a
 
 args = p.parse_args()
 
-token=functions.setenv()
-
-os.environ['STRAVASMOOTH_TOKEN']=token
+token=functions.gettoken()
 
 activity,client = extractgpx.main(args.activity_id)
 
