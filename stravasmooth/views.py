@@ -68,7 +68,6 @@ def token(request):
                                                       code=code)
 
         request.session['STRAVASMOOTH_TOKEN'] = access_token
-        os.environ['STRAVASMOOTH_TOKEN'] = access_token
 
         athlete = client.get_athlete()
         request.session['ATHLETE_FIRSTNAME'] = athlete.firstname
