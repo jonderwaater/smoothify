@@ -41,15 +41,15 @@ if not activity == None :
     gnd = functions.distance(latsmooth,lonsmooth,elesmooth)
     rgod = (god-sod)/sod*100
     rgnd = (gnd-sod)/sod*100
-    print 'Strava old distance {0:.0f}m'.format(sod)
+    print('Strava old distance {0:.0f}m'.format(sod))
     if not args.no_upload :
         rsnd = (snd-sod)/sod*100
-        print 'Strava new distance {0:.0f}m ({1:.2f}%)'.format(snd,rsnd)
-    print 'Old gpx distance:   {0:.0f}m ({1:.2f}%)'.format(god,rgod)
-    print 'New gpx distance:   {0:.0f}m ({1:.2f}%)'.format(gnd,rgnd)
+        print('Strava new distance {0:.0f}m ({1:.2f}%)'.format(snd,rsnd))
+    print('Old gpx distance:   {0:.0f}m ({1:.2f}%)'.format(god,rgod))
+    print('New gpx distance:   {0:.0f}m ({1:.2f}%)'.format(gnd,rgnd))
 
     if args.cleanup :
         os.remove(activity_id+".gpx")
         os.remove(activity_id+"_smooth.gpx")
         os.remove(activity_id+".png")
-        print "Removed created files"
+        print('Removed created files')
