@@ -3,8 +3,8 @@ import fileinput
 import sys
 import tempfile
 import multiprocessing as mp
-import functions
 from gpxpy import geo as mod_geo
+from . import functions
 
 def getgpxstring(filename,algo=1):
     with open(filename, 'r') as f:

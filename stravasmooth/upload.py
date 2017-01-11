@@ -5,7 +5,7 @@ import argparse
 import requests
 import time
 import xml.etree.ElementTree as ET
-import functions
+from . import functions
 
 try:
     import configparser
