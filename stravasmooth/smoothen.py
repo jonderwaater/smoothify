@@ -7,13 +7,13 @@ import functions
 from gpxpy import geo as mod_geo
 
 def getgpxstring(filename,algo=1):
-    infile = open(filename, 'r')
-    gpx_file_data=infile.read()
+    with open(filename, 'r') as f:
+      gpx_file_data=f.read()
     return gpx_file_data
 
 def smoothengpxfilename(filename, algo=1) :
-    gpxfile = open(filename,'r')
-    gpxdata = gpxfile.read()
+    with open(filename, 'r') as f:
+      gpxdata=f.read()
     gpxdata_smooth,lat,lon,ele,latsmooth,lonsmooth,elesmooth = smoothengpx(gpxdata,algo)
     return gpxdata_smooth,lat,lon,ele,latsmooth,lonsmooth,elesmooth
 
