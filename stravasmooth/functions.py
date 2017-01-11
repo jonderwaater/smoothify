@@ -44,7 +44,7 @@ def plot(outfile,lat,lon,latsmooth,lonsmooth) :
     plt.plot(lonsmooth, latsmooth, '-',zorder=1)
     plt.scatter(lon, lat, s=1, color='red', edgecolor='',zorder=2)
     plt.savefig(outfile, facecolor = fig.get_facecolor(), bbox_inches='tight', pad_inches=0, dpi=900)
-    print "File created:",outfile
+    print('File created: {}'.format(outfile))
 
 
 def runplot(args) :

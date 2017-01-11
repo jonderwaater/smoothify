@@ -109,7 +109,7 @@ def runsmoothengpx(args) :
                             
 
 def writeoutput(filename,gpx) :
-    print "File created:",filename
+    print('File created: {}'.format(filename))
     with open(filename, 'w') as file :
         file.write(gpx)
 

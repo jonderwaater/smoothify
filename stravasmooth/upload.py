@@ -47,7 +47,7 @@ def main(arguments=""):
     private = args.private
     ori_id = args.ori_id
 
-    print "Uploading activity..."
+    print('Uploading activity...')
 
     token = functions.gettoken()
     client = Client(access_token=token)
@@ -65,7 +65,7 @@ def upload(client, gpxfile, title, desc, activity_type, private, overwrite, dupl
 
     if not duplicate_id == None :
         if overwrite :
-            print "Deleting activity",duplicate_id
+            print('Deleting activity {}'.format(duplicate_id))
             client.delete_activity(duplicate_id)
             time.sleep(1)
 
@@ -75,7 +75,7 @@ def upload(client, gpxfile, title, desc, activity_type, private, overwrite, dupl
     except exc.ActivityUploadFailed as e:
         words = e.args[0].split()
         if words[-4:-1]==['duplicate','of','activity']:
-            print "Activity is duplicate"
+            print('Activity is duplicate')
             activity = client.get_activity(words[-1])
             if overwrite :
                 activity = upload(client, gpxfile, title, desc, activity_type, private, overwrite, duplicate_id=activity.id)
@@ -84,7 +84,7 @@ def upload(client, gpxfile, title, desc, activity_type, private, overwrite, dupl
             raise
 
     webpage = 'https://www.strava.com/activities/{}'.format(activity.id)
-    print "Activity available at:",webpage
+    print('Activity available at: {}'.format(webpage))
     return activity
 
 

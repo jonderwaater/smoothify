@@ -83,13 +83,13 @@ def getactivity(activity_id=0,client=None) :
         try :
             activity = client.get_activity(activity_id)
         except :
-            print "Activity not found"
+            print('Activity not found')
             return int(0),client
 
     athlete = activity.athlete
 
     if not athlete.is_authenticated_athlete() :
-        print "Activity does not belong to user" 
+        print('Activity does not belong to user')
         return int(1),client
 
 
@@ -108,9 +108,9 @@ def extractgpx(activity,client):
         timestamp=str(activity.start_date)
     
         proc = 'Processing activity "{0}" ({1}) from date {2}'.format(activity.name,activity.id,datetime.strptime(timestamp, "%Y-%m-%d %H:%M:%S+00:00"))
-        print proc 
+        print(proc)
         outfilename = '{}.gpx'.format(activity.id)
-        print "File created:",outfilename
+        print('File created: {}'.format(outfilename))
     
         insert_date_stamp(file,timestamp)
     
@@ -142,9 +142,9 @@ def extractgpx(activity,client):
 def main(activity_id=0):
 
     if activity_id == 0 :
-        print "Retrieving latest activity"
+        print('Retrieving latest activity')
     else :
-        print "Retrieving activity",activity_id
+        print('Retrieving activity {}'.format(activity_id))
 
     activity,client = getactivity(activity_id)
 
