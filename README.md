@@ -2,7 +2,7 @@
 
 If you suffer from jittery GPS data and from Strava consequently overestimating your athletic abilities (especially for runs), run this software for a more realistic account.
 
-![alt text](https://github.com/jonderwaater/stravasmooth/blob/master/example.png "Before & after")
+![alt text](https://github.com/jonderwaater/stravasmooth/blob/master/gettingstarted/static/example.png "Before & after")
 
 The activity data is exported from your Strava account to a gpx file and re-uploaded after applying a smoothening algorithm.
 
@@ -17,7 +17,7 @@ If you want to run the program on your own device follow the steps below.
 pip install git+https://github.com/jonderwaater/stravasmooth  
 ````
 
-You need an access token. You can generate it on https://stravacli-dlenski.rhcloud.com/. Store the token in ~/.stravacli as described above the generated token.
+You need an access token. You can generate it on https://stravasmooth.herokuapp.com/. Store the token in ~/.stravasmooth as described above the generated token.
 
 ## General usage
 When your activity is uploaded to your account, run the software in a shell:
@@ -27,9 +27,9 @@ $ stravasmoothen
 Your original activity will be replaced automatically. 
 
 In the directory where you run stravasmoothen the following files are created:  
-[Activity name].gpx           - the gpx file of your original activity  
-[Activity name]_smooth.gpx    - the gpx file with smoothened data  
-[Activity name].png           - plot comparing the original and the smoothened data  
+[Activity id].gpx           - the gpx file of your original activity  
+[Activity id]_smooth.gpx    - the gpx file with smoothened data  
+[Activity id].png           - plot comparing the original and the smoothened data  
 
 Warning:  
 This code has only been tested on activities recorded with the Strava Android App.  
@@ -53,14 +53,17 @@ The program will also run on Android on the [Termux](https://play.google.com/sto
 
 ## The scripts
 
--- exportgpx.py  
+-- extractgpx.py  
 Retrieves data from the latest Strava activity and writes it to a gpx file. As far as I know there is no other available method  to obtain a gpx file from the command line.  
 
 -- smoothen.py  
 Smoothens the data in the gpx file. Currently it uses a simple algorithm that takes running average of 9 points, in steps of 1 point. More advanced algorithms may be implemented in the future, but it's already a significant improvement over untreated data.
 
--- stravaup.py  
+-- upload.py  
 Uploads the the activity.  
+
+-- functions.py  
+Contains helper functions
 
 
 ## Dependencies
@@ -69,11 +72,8 @@ stravalib, matplotlib, gpxpy and others
 
 OTHER SOURCES:  
 
-Code has been shamelessly copied from  
-https://github.com/dlenski/stravacli  
-in order to download and upload Strava activities. Because of relatively large modifications I copied the code. I might prepare a pull request, and if accepted I'll refer to it as a true dependency.
-
-Code presented in this [blog post](http://andykee.com/visualizing-strava-tracks-with-python.html) by Andy Kee is used to read and plot gpx files.
+For uploading using stravalib lessons were learned from https://github.com/dlenski/stravacli.  
+For plotting gpx files I looked at a [blog post](http://andykee.com/visualizing-strava-tracks-with-python.html) by Andy Kee.
 
 
 
