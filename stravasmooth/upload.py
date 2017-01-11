@@ -1,12 +1,11 @@
-#!/usr/bin/env python2
-
 from stravalib import Client, exc
 from sys import stderr, stdin
 import os.path
 import argparse
 import requests
-import gpxpy
 import time
+import xml.etree.ElementTree as ET
+import functions
 
 try:
     import configparser
@@ -22,7 +21,7 @@ except ImportError:
 #####
 
 
-def main(arguments):
+def main(arguments=""):
 
 
     p = argparse.ArgumentParser(description='''Uploads activities to Strava.''')
@@ -35,47 +34,39 @@ def main(arguments):
                                                                   ride, run, swim, workout, hike, walk, nordicski, alpineski,
                                                                   backcountryski, iceskate, inlineskate, kitesurf, rollerski,
                                                                   windsurf, workout, snowboard, snowshoe''')
+    g.add_argument('-i', '--ori-id', default=None, help='Id of original activity on Strava')
 
-    args = p.parse_args(arguments.split(" "))
+    if arguments == "" :  
+        args = p.parse_args()
+    else :
+        args = p.parse_args(arguments.split(" "))
 
     overwrite = args.overwrite
     gpx_filename = args.filename
     activity_type = args.activity_type
     private = args.private
+    ori_id = args.ori_id
 
-    client = Client(access_token=os.environ['CLIENT_TOKEN'])
+    print "Uploading activity..."
+
+    client = Client(access_token=os.environ['STRAVASMOOTH_TOKEN'])
                                                                   
-    gpx_file = open(gpx_filename, 'r')
-    gpx = gpxpy.parse(gpx_file)
-        
-    gpx_file.seek(0,0)
-    gpxfile = gpx_file.read()
+    gpxfile, title, desc = functions.getgpxinfofilename(gpx_filename)
 
-    for track in gpx.tracks :
-        title = track.name
-        desc = track.description
-
-    upload(client, gpxfile, title, desc, activity_type, private, overwrite)
+    newactivity = upload(client, gpxfile, title, desc, activity_type, private, overwrite, ori_id)
+    return newactivity
 
                                                                   
 def upload(client, gpxfile, title, desc, activity_type, private, overwrite, duplicate_id=None):
 
     if desc == 'None' :
         desc = ''
-        
-
-    # upload activity
 
     if not duplicate_id == None :
         if overwrite :
+            print "Deleting activity",duplicate_id
             client.delete_activity(duplicate_id)
             time.sleep(1)
-            upstat = client.upload_activity(gpxfile, 'gpx', title, desc, private=private, activity_type=activity_type)
-            activity = upstat.wait()
-            return activity.id
-
-    return 0
-
 
     try:
         upstat = client.upload_activity(gpxfile, 'gpx', title, desc, private=private, activity_type=activity_type)
@@ -83,22 +74,19 @@ def upload(client, gpxfile, title, desc, activity_type, private, overwrite, dupl
     except exc.ActivityUploadFailed as e:
         words = e.args[0].split()
         if words[-4:-1]==['duplicate','of','activity']:
+            print "Activity is duplicate"
             activity = client.get_activity(words[-1])
             if overwrite :
-                print("Uploading duplicate, overwriting original")
-                activity_id = activity.id
-                client.delete_activity(activity_id)
-                try:
-                    upstat = client.upload_activity(gpxfile, 'gpx' , title, desc, private=private, activity_type=activity_type)
-                    activity = upstat.wait()
-                    return activity
-                except exc.ActivityUploadFailed as e:
-                    print("Upload failed")
+                activity = upload(client, gpxfile, title, desc, activity_type, private, overwrite, duplicate_id=activity.id)
+                return activity
         else:
             raise
-    
+
+    webpage = 'https://www.strava.com/activities/{}'.format(activity.id)
+    print "Activity available at:",webpage
     return activity
 
 
+
 if __name__ == "__main__":
-    main(arguments)
+    main()

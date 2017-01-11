@@ -15,14 +15,14 @@ import time
 import os
 
 from stravalib import Client
-import gpxpy
+#import gpxpy
 
-import extractgpx,smoothen
-from upload import upload
+import extractgpx,smoothen,functions
 from utils import uploadhelper,smoothenhelper
-import compare
+import xml.etree.ElementTree as ET
 
 from .models import Greeting
+#import resource
 
 class ActivityIdForm(forms.Form):
     activity_id = forms.IntegerField()
@@ -34,12 +34,14 @@ queue = Queue(connection=conn)
 
 def index(request):
 
-    client_id = os.environ['CLIENT_ID']
+    client_id = os.environ['STRAVASMOOTH_ID']
 
     client = Client()
     
     redirect_uri = request.build_absolute_uri('/token/')
     url = client.authorization_url(client_id=client_id, redirect_uri=redirect_uri, scope='view_private,write')
+
+    #print '(index) Memory usage: %s (kb)' % resource.getrusage(resource.RUSAGE_SELF).ru_maxrss
 
     return render(request, 'index.html',{'url':url})
 
@@ -47,6 +49,8 @@ def index(request):
     response.write('<img src="/stravasmooth/stravasmooth_banner.png">')
     response.write('<a href=' + url + '>Connect to Strava</a></br></br>')
     response.write('Web interface to <a href="https://github.com/jonderwaater/stravasmooth/">stravasmooth</a> by <a href="https://github.com/jonderwaater/">jonderwaater</a></br></br>')
+
+
     return response
 
 
@@ -59,17 +63,16 @@ def token(request):
         return HttpResponse('<a href='+reverse('index')+'>Failed, try again.</a>')
     else :
         client = Client()
-        access_token = client.exchange_code_for_token(client_id=os.environ['CLIENT_ID'],
-                                                      client_secret=os.environ['CLIENT_SECRET'],
+        access_token = client.exchange_code_for_token(client_id=os.environ['STRAVASMOOTH_ID'],
+                                                      client_secret=os.environ['STRAVASMOOTH_SECRET'],
                                                       code=code)
 
-        request.session['CLIENT_TOKEN'] = access_token
-        os.environ['CLIENT_TOKEN'] = access_token
+        request.session['STRAVASMOOTH_TOKEN'] = access_token
+        os.environ['STRAVASMOOTH_TOKEN'] = access_token
 
         athlete = client.get_athlete()
         request.session['ATHLETE_FIRSTNAME'] = athlete.firstname
 
-        print("Logged in")
 
         request.session['ACTIVITY_ERROR']=None
         return HttpResponseRedirect('/activity/')
@@ -78,7 +81,7 @@ def token(request):
 
 def activity(request):
 
-    request.session['ACTIVITY_ID'] = None
+    request.session['ACTIVITY_ID'] = 0
 
     if request.method == 'POST':
         form = ActivityIdForm(request.POST)
@@ -94,9 +97,11 @@ def activity(request):
 
 def process(request):
 
-    client = Client(request.session['CLIENT_TOKEN'])
+    client = Client(request.session['STRAVASMOOTH_TOKEN'])
 
-    activity = extractgpx.getactivity(request.session['ACTIVITY_ID'], client)
+    activity_id = int(request.session['ACTIVITY_ID'])
+    #activity,client = extractgpx.getactivity(0,client)
+    activity,client = extractgpx.getactivity(activity_id,client)
 
     if activity == 0 :
         request.session['ACTIVITY_ERROR']=0
@@ -107,9 +112,7 @@ def process(request):
         request.session['ACTIVITY_ERROR']=1
         return HttpResponseRedirect('/activity/')
 
-    extractgpx.extractgpx(activity, client)
-
-    athlete = activity.athlete
+    gpxfilename = extractgpx.extractgpx(activity, client)
 
     request.session['ACTIVITY_NAME']     =        activity.name
     request.session['TIMESTAMP']         =    str(activity.start_date)
@@ -118,10 +121,7 @@ def process(request):
     request.session['ACTIVITY_PRIVATE']  =        activity.private
     request.session['ACTIVITY_ID']       =        activity.id
 
-
-    gpx_file = open('{}.gpx'.format(request.session['ACTIVITY_ID']), 'r')
-
-    arg1 = smoothen.smoothen(gpx_file)
+    arg1 = smoothen.getgpxstring(gpxfilename)
 
     job = queue.enqueue(smoothenhelper, (arg1,))
     request.session['SMOOTHENJOB_ID'] = job.id
@@ -138,16 +138,14 @@ def waitprocess(request):
         time.sleep(3)
         return HttpResponseRedirect('/waitprocess/')
 
-    smoothened_data = job.result
-
+    smoothened_data, lat, lon, ele, latsmooth, lonsmooth, elesmooth = job.result
     smoothen.writeoutput('{}_smooth.gpx'.format(request.session['ACTIVITY_ID']),smoothened_data)
 
-    gpxin  = smoothen.getgpxinfile('{}.gpx'.format(request.session['ACTIVITY_ID']))
-    gpxout = smoothen.getgpxinfile('{}_smooth.gpx'.format(request.session['ACTIVITY_ID']))
+    request.session['DISTANCE_OLD'] = functions.distance(lat,lon,ele)
+    request.session['DISTANCE_NEW'] = functions.distance(latsmooth,lonsmooth,elesmooth)
 
-    request.session['DISTANCE_OLD'], request.session['DISTANCE_NEW'] = compare.comparegpx(gpxin,gpxout)
-
-    compare.plot('{}.png'.format(request.session['ACTIVITY_ID']),gpxin,gpxout)
+    args = ('{}.png'.format(request.session['ACTIVITY_ID']),lat,lon,latsmooth,lonsmooth,)
+    functions.runplot(args)
     return HttpResponseRedirect('/overview/')
 
 
@@ -193,20 +191,12 @@ def overview(request):
 
 
 def gpxupload(request):
-    client = Client(request.session['CLIENT_TOKEN'])
-    overwrite=True
 
-    gpx_file = open('{}_smooth.gpx'.format(request.session['ACTIVITY_ID']), 'r')
-    gpx = gpxpy.parse(gpx_file)
+    gpxfilename = '{}_smooth.gpx'.format(request.session['ACTIVITY_ID'])
+    gpxfile, title, desc = functions.getgpxinfofilename(gpxfilename)
 
-    gpx_file.seek(0,0)
-    gpxfile = gpx_file.read()
-
-    for track in gpx.tracks :
-        title = track.name
-        desc = track.description
-
-    args=(request.session['CLIENT_TOKEN'], gpxfile, title, desc, request.session['ACTIVITY_TYPE'], request.session['ACTIVITY_PRIVATE'], overwrite, request.session['ACTIVITY_ID'],)
+    overwrite = True
+    args=(request.session['STRAVASMOOTH_TOKEN'], gpxfile, title, desc, request.session['ACTIVITY_TYPE'], request.session['ACTIVITY_PRIVATE'], overwrite, request.session['ACTIVITY_ID'],)
     job = queue.enqueue(uploadhelper, args)
     request.session['UPLOADJOB_ID'] = job.id
     return HttpResponseRedirect('/wait/')

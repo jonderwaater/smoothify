@@ -1,6 +1,3 @@
-#!/usr/bin/env python2
-from __future__ import print_function
-
 from stravalib import Client, exc
 #from sys import stderr, stdin
 import sys
@@ -8,7 +5,7 @@ from tempfile import NamedTemporaryFile
 import os.path
 import argparse
 import requests
-import datetime
+from datetime import datetime,timedelta
 
 
 try:
@@ -52,8 +49,8 @@ def start_segment(file,name,desc):
 
 def insert_datapoint(file,lat,lon,ele,time):
     file.write('   <trkpt lat=\"{0:.7f}\"'.format(lat))
-    file.write('  lon=\"{0:.7f}\">\n'.format(lon))
-    file.write('    <ele>{0:.2f}</ele>\n'.format(ele))
+    file.write(' lon=\"{0:.7f}\">\n'.format(lon))
+    file.write('    <ele>{0:.1f}</ele>\n'.format(ele))
     file.write("    ")
     ts = '<time>{}Z</time>\n'.format(time)
     ts = ts.replace(" ","T")
@@ -71,11 +68,11 @@ def end_segment(file):
 
 #####
 
-def getactivity(activity_id=None,client=None) :
+def getactivity(activity_id=0,client=None) :
     if client == None :
-        client = Client(access_token=os.environ['CLIENT_TOKEN'])
+        client = Client(access_token=os.environ['STRAVASMOOTH_TOKEN'])
 
-    if activity_id == None :
+    if activity_id == 0 :
         activities = client.get_activities(limit=1)
         for i in activities :
             activity = i
@@ -84,27 +81,34 @@ def getactivity(activity_id=None,client=None) :
         try :
             activity = client.get_activity(activity_id)
         except :
-            return int(0)
+            print "Activity not found"
+            return int(0),client
 
     athlete = activity.athlete
 
     if not athlete.is_authenticated_athlete() :
-        return int(1)
+        print "Activity does not belong to user" 
+        return int(1),client
 
 
-    return activity
+    return activity,client
 
 
 
 def extractgpx(activity,client):
 
     types = ['time', 'latlng', 'altitude' ]
-    
+
     with open('{}.gpx'.format(activity.id), 'w') as file :
     
         intro(file)
     
         timestamp=str(activity.start_date)
+    
+        proc = 'Processing activity "{0}" ({1}) from date {2}'.format(activity.name,activity.id,datetime.strptime(timestamp, "%Y-%m-%d %H:%M:%S+00:00"))
+        print proc 
+        outfilename = '{}.gpx'.format(activity.id)
+        print "File created:",outfilename
     
         insert_date_stamp(file,timestamp)
     
@@ -121,39 +125,40 @@ def extractgpx(activity,client):
         altitude = streams['altitude'].data
         distance = streams['distance'].data
     
-        start_date = datetime.datetime(int(datestring[0]), int(datestring[1]), int(datestring[2]), int(timestring[0]), int(timestring[1]), int(timestring[2]))
-    
-        print("Processing activity \"",activity.name,"\" from date",start_date)
+        start_date = datetime(int(datestring[0]), int(datestring[1]), int(datestring[2]), int(timestring[0]), int(timestring[1]), int(timestring[2]))
     
         for it in range(0,len(latlng)):
             lat = latlng[it][0]
             lon = latlng[it][1]
-            t = start_date + datetime.timedelta(seconds=time[it])
+            t = start_date + timedelta(seconds=time[it])
             alt = altitude[it]
             insert_datapoint(file,lat,lon,alt,t)
     
         end_segment(file)
+        return outfilename
 
+def main(activity_id=0):
+
+    if activity_id == 0 :
+        print "Retrieving latest activity"
+    else :
+        print "Retrieving activity",activity_id
+
+    activity,client = getactivity(activity_id)
+
+    if not activity == 0 and not activity==1 :
+        extractgpx(activity,client)
+        return activity,client
+
+    return None,None
 
 
 if __name__ == "__main__":
-
-    activity_id = None
-
+    activity_id = 0
     if len(sys.argv) > 1 :
-        activity_id = sys.argv[1]
+        activity_id = args[1]
+    main(activity_id)
 
-    if activity_id == None :
-        print("Retrieving last activity")
-    else :
-        print("Retrieving activity",activity_id)
-
-    activity = getactivity()
-
-    if activity.is_authenticated_athlete() :
-        extractgpx(client,activity)
-    else :
-        print("Activity does not belong to user")
 
 #####
 
