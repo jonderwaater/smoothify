@@ -1,4 +1,3 @@
-from stravalib import Client, exc
 #from sys import stderr, stdin
 import sys
 from tempfile import NamedTemporaryFile
@@ -6,6 +5,7 @@ import os.path
 import argparse
 import requests
 from datetime import datetime,timedelta
+from stravalib import Client, exc
 from . import functions
 
 

@@ -2,6 +2,7 @@ import re
 import fileinput
 import sys
 import tempfile
+import time
 import multiprocessing as mp
 from gpxpy import geo as mod_geo
 from . import functions
@@ -19,11 +20,14 @@ def smoothengpxfilename(filename, algo=1) :
 
 def smoothengpx(gpx_file_smooth_data, algo, return_dict=None) :
     
-    infile = tempfile.TemporaryFile()
+    infile = tempfile.NamedTemporaryFile('w',1)
     infile.write(gpx_file_smooth_data)
-    infile.seek(0)
+    tempfilename = infile.name
 
-    lat,lon,ele,time = functions.getarraysfile(gpx_file_smooth_data)
+    tempf = open(tempfilename, 'r')
+    temp = tempf.read()
+
+    lat,lon,ele,times = functions.getarraysfile(gpx_file_smooth_data)
 
     latsmooth = list(lat)
     lonsmooth = list(lon)
@@ -58,28 +62,37 @@ def smoothengpx(gpx_file_smooth_data, algo, return_dict=None) :
         
 
     distance=0
-    for i in range(len(lat)) :
-        oldline=""
-        for line in infile:
-            twoline = oldline + line
-            linevalues = re.findall("\d+\.\d+",twoline)
-            if(len(linevalues)==3):
-                thislat = float(linevalues[0])
-                thislon = float(linevalues[1])
+    pos=0
+    i=-1
+    while i < len(lat)-1 :
+        i = i + 1
+        tempf.seek(pos)
+        line = tempf.readline()
+        pos = tempf.tell()
+        line = line + tempf.readline()
+        linevalues = re.findall("\d+\.\d+",line)
+        if(len(linevalues)==3):
+            thislat = float(linevalues[0])
+            thislon = float(linevalues[1])
 
-                data={lat[i],lon[i]}
+            newline = '   <trkpt lat="{0:.7f}" lon="{1:.7f}">\n    <ele>{2:.1f}</ele>\n'.format(latsmooth[i],lonsmooth[i],elesmooth[i])
+            gpx_file_smooth_data = gpx_file_smooth_data.replace(line,newline)
 
+        else :
+            i = i -1
+
+
+         #   print(line,thislat,thislon)
     
-                if thislat == lat[i]:
-                    if thislon == lon[i]:
-                        if i > 0 :
-                            distance = distance + mod_geo.distance(latsmooth[i],lonsmooth[i],elesmooth[i],latsmooth[i-1],lonsmooth[i-1],elesmooth[i-1])
+         #   if thislat == lat[i]:
+         #       if thislon == lon[i]:
+         #           if i > 0 :
+         #               distance = distance + mod_geo.distance(latsmooth[i],lonsmooth[i],elesmooth[i],latsmooth[i-1],lonsmooth[i-1],elesmooth[i-1])
     
-                        newline = '   <trkpt lat="{0:.7f}" lon="{1:.7f}">\n    <ele>{2:.1f}</ele>\n'.format(latsmooth[i],lonsmooth[i],elesmooth[i])
-                        #newline = '   <trkpt lat="{0:.7f}" lon="{1:.7f}">\n    <ele>{2:.1f}</ele>\n    <extensions>\n      <distance>{3:.2f}</distance>\n    </extensions>\n'.format(latsmooth[i],lonsmooth[i],elesmooth[i],distance)
-                        gpx_file_smooth_data = gpx_file_smooth_data.replace(twoline,newline)
-                        break
-            oldline = line
+         #           newline = '   <trkpt lat="{0:.7f}" lon="{1:.7f}">\n    <ele>{2:.1f}</ele>\n'.format(latsmooth[i],lonsmooth[i],elesmooth[i])
+         #           #newline = '   <trkpt lat="{0:.7f}" lon="{1:.7f}">\n    <ele>{2:.1f}</ele>\n    <extensions>\n      <distance>{3:.2f}</distance>\n    </extensions>\n'.format(latsmooth[i],lonsmooth[i],elesmooth[i],distance)
+         #           gpx_file_smooth_data = gpx_file_smooth_data.replace(line,newline)
+         #           break
 
     if return_dict == None :
         return gpx_file_smooth_data,lat,lon,ele,latsmooth,lonsmooth,elesmooth
