@@ -94,8 +94,7 @@ def process(request):
     client = Client(request.session['STRAVASMOOTH_TOKEN'])
 
     activity_id = int(request.session['ACTIVITY_ID'])
-    #activity,client = extractgpx.getactivity(0,client)
-    activity,client = extractgpx.getactivity(activity_id,client)
+    activity,client = functions.getactivity(activity_id,client)
 
     if activity == 0 :
         request.session['ACTIVITY_ERROR']=0

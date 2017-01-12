@@ -69,33 +69,6 @@ def end_segment(file):
 
 #####
 
-def getactivity(activity_id=0,client=None) :
-    if client == None :
-        token = functions.gettoken()
-        client = Client(access_token=token)
-
-    if activity_id == 0 :
-        activities = client.get_activities(limit=1)
-        for i in activities :
-            activity = i
-
-    else :
-        try :
-            activity = client.get_activity(activity_id)
-        except :
-            print('Activity not found')
-            return int(0),client
-
-    athlete = activity.athlete
-
-    if not athlete.is_authenticated_athlete() :
-        print('Activity does not belong to user')
-        return int(1),client
-
-
-    return activity,client
-
-
 
 def extractgpx(activity,client):
 
@@ -146,7 +119,7 @@ def main(activity_id=0):
     else :
         print('Retrieving activity {}'.format(activity_id))
 
-    activity,client = getactivity(activity_id)
+    activity,client = functions.getactivity(activity_id)
 
     if not activity == 0 and not activity==1 :
         extractgpx(activity,client)
