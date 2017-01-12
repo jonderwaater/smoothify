@@ -65,7 +65,7 @@ def plot(outfile,lat,lon,latsmooth,lonsmooth) :
 
     fig = plt.figure(facecolor = '0.05')
     ax = plt.Axes(fig, [0., 0., 1., 1.], )
-    ax.set_aspect('equal')
+    #ax.set_aspect('equal')
     ax.set_axis_off()
     fig.add_axes(ax)
     plt.plot(lonsmooth, latsmooth, '-',zorder=1)
