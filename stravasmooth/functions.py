@@ -95,9 +95,8 @@ def getarraysfile(gpxdata):
             lat.append(float(point.get('lat')))
             lon.append(float(point.get('lon')))
             ele.append(float(point[0].text))
-            for at in point:
-                ptime = point.find('{http://www.topografix.com/GPX/1/1}time')
-                time.append(ptime.text)
+            ptime = point.find('{http://www.topografix.com/GPX/1/1}time')
+            time.append(ptime.text)
             #print point.attrib,point[1].text
             #time.append(datetime.strptime(point[1].text, "%Y-%m-%dT%H:%M:%SZ"))
 
