@@ -1,3 +1,4 @@
+from stravalib import Client, exc
 from gpxpy import geo as mod_geo
 import multiprocessing as mp
 from datetime import datetime
