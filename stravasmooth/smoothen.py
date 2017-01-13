@@ -9,12 +9,12 @@ from . import functions
 from datetime import datetime
 import copy
 
-def getgpxstring(filename,algo=1):
+def getgpxstring(filename,algo=2):
     with open(filename, 'r') as f:
       gpx_file_data=f.read()
     return gpx_file_data
 
-def smoothengpxfilename(filename, algo=1) :
+def smoothengpxfilename(filename, algo=2) :
     with open(filename, 'r') as f:
       gpxdata=f.read()
     gpxdata_smooth,lat,lon,ele,latsmooth,lonsmooth,elesmooth = smoothengpx(gpxdata,algo)
@@ -150,7 +150,7 @@ def writeoutput(filename,gpx) :
         file.write(gpx)
 
 
-def main(filename,algo=1):
+def main(filename,algo=2):
     gpxsmooth,lat,lon,ele,latsmooth,lonsmooth,elesmooth = smoothengpxfilename(filename,algo)
     newfilename = filename.replace('.gpx','_smooth.gpx')
     writeoutput(newfilename,gpxsmooth)
@@ -162,7 +162,7 @@ if __name__ == "__main__":
     filename = sys.argv[1]
 
     if len(sys.argv) > 1 :
-        algo = 1
+        algo = 2
         if len(sys.argv) > 2 :
             algo = sys.argv[2]
 
