@@ -65,7 +65,7 @@ def smoothengpx(gpx_file_smooth_data, algo, return_dict=None) :
         
         # time limit on point average
         if int(algo) == 2 :
-            midstamp = datetime.strptime(timesslice[(nsection-1)/2], "%Y-%m-%dT%H:%M:%SZ")
+            midstamp = datetime.strptime(timesslice[int((nsection-1)/2)], "%Y-%m-%dT%H:%M:%SZ")
             i=-1
             while i < len(latslice)-1 :
                 i = i+1
@@ -134,7 +134,7 @@ def runsmoothengpx(args) :
     manager = mp.Manager()
     return_dict = manager.dict()
     if len(args) == 1 :
-        args = args + (1,)
+        args = args + (2,)
     args = args + (return_dict,)
     proc=mp.Process(target=smoothengpx,args=args)
     #proc.daemon=True
