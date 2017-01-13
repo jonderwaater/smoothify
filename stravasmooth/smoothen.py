@@ -6,6 +6,8 @@ import time
 import multiprocessing as mp
 from gpxpy import geo as mod_geo
 from . import functions
+from datetime import datetime
+import copy
 
 def getgpxstring(filename,algo=1):
     with open(filename, 'r') as f:
@@ -34,12 +36,13 @@ def smoothengpx(gpx_file_smooth_data, algo, return_dict=None) :
     elesmooth = list(ele)
     
     # this is the smoothening algorithm
-    nsection=9
+    nsection=7
     for sectionstart in range(0,len(lon)-1-nsection):
         centslice = int(sectionstart+(nsection-1)/2)
         lonslice = lon[sectionstart:sectionstart+nsection]
         latslice = lat[sectionstart:sectionstart+nsection]
         eleslice = ele[sectionstart:sectionstart+nsection]
+        timesslice = times[sectionstart:sectionstart+nsection]
 
         if int(algo) == 0 :
             import numpy as np
@@ -60,6 +63,26 @@ def smoothengpx(gpx_file_smooth_data, algo, return_dict=None) :
             latsmooth[centslice] = sum(latslice)/len(latslice)
             elesmooth[centslice] = sum(eleslice)/len(eleslice)
         
+        # time limit on point average
+        if int(algo) == 2 :
+            midstamp = datetime.strptime(timesslice[(nsection-1)/2], "%Y-%m-%dT%H:%M:%SZ")
+            i=-1
+            while i < len(latslice)-1 :
+                i = i+1
+                thisstamp  = datetime.strptime(timesslice[i], "%Y-%m-%dT%H:%M:%SZ")
+                delta = thisstamp - midstamp
+                delta = abs(delta)
+                if delta.seconds > 6 :
+                    latslice = latslice[:i] + latslice[i+1 :]
+                    lonslice = lonslice[:i] + lonslice[i+1 :]
+                    eleslice = eleslice[:i] + eleslice[i+1 :]
+                    timesslice = timesslice[:i] + timesslice[i+1 :]
+                    i = i-1
+
+            lonsmooth[centslice] = sum(lonslice)/len(lonslice)
+            latsmooth[centslice] = sum(latslice)/len(latslice)
+            elesmooth[centslice] = sum(eleslice)/len(eleslice)
+
 
     distance=0
     pos=0

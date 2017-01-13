@@ -10,7 +10,7 @@ p.add_argument('-g', '--no-graph'    , action='store_true', help="do not create 
 p.add_argument('-u', '--no-upload'   , action='store_true' , help="do not upload smoothened data to Strava.")
 p.add_argument('-d', '--dry-run'     , action='store_true' , help="do not overwrite original activity when attempting to upload to Strava.")
 p.add_argument('-c', '--cleanup'     , action='store_true' , help="delete created files after uploading activity.")
-p.add_argument('-s', '--algo'        , default=1           , help="smoothening algorithm.")
+p.add_argument('-s', '--algo'        , default=2           , help="smoothening algorithm.")
 
 args = p.parse_args()
 
