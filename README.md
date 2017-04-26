@@ -1,32 +1,32 @@
-# stravasmooth
+# smoothify
 
 If you suffer from jittery GPS data and from Strava consequently overestimating your athletic abilities (especially for runs), run this software for a more realistic account.
 
-![alt text](https://github.com/jonderwaater/stravasmooth/blob/master/gettingstarted/static/example.png "Before & after")
+![alt text](https://github.com/jonderwaater/smoothify/blob/master/gettingstarted/static/example.png "Before & after")
 
 The activity data is exported from your Strava account to a gpx file and re-uploaded after applying a smoothening algorithm.
 
 ## Web interface
-https://stravasmooth.herokuapp.com/  
+https://smoothify.herokuapp.com/  
 Follow the link to smoothen your data through the web interface. The generated information is not stored in a database.
 If you want to run the program on your own device follow the steps below.
 
 ## Installation
 
 ````bash
-pip install git+https://github.com/jonderwaater/stravasmooth  
+pip install git+https://github.com/jonderwaater/smoothify  
 ````
 
-You need an access token. You can generate it on https://stravasmooth.herokuapp.com/. Store the token in ~/.stravasmooth as described above the generated token.
+You need an access token. You can generate it on https://smoothify.herokuapp.com/. Store the token in ~/.smoothify as described above the generated token.
 
 ## General usage
 When your activity is uploaded to your account, run the software in a shell:
 ````bash
-$ stravasmoothen
+$ smoothen
 ````
 Your original activity will be replaced automatically. 
 
-In the directory where you run stravasmoothen the following files are created:  
+In the directory where you run smoothen the following files are created:  
 [Activity id].gpx           - the gpx file of your original activity  
 [Activity id]_smooth.gpx    - the gpx file with smoothened data  
 [Activity id].png           - plot comparing the original and the smoothened data  

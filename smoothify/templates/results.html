@@ -1,0 +1,34 @@
+
+<html>
+  <head>
+      {% load staticfiles %}
+        <link rel="shortcut icon" type="image/png" href="{% static "smoothify_favicon.png" %}"/>
+  </head>
+<body>
+  {% load staticfiles %}
+  <img src="{% static "smoothify_logo.png" %}" alt="smoothify"/></br></br>
+
+  Your activity "{{ activity_name }}" from {{timestamp}} has been processed.</br></br>
+  
+  <pre>Distances:</pre>
+  <pre>Original on Strava : {{distance}} m</pre>
+  <pre>Original in gpx    : {{distance_old}} m  ({{change_old}}%)</pre>
+  <pre>Smoothened activity: {{distance_new}} m  ({{change_new}}%)</pre>
+
+  </br>
+
+  <button type="button" onclick="location.href='{{up}}'">Upload the processed data to Strava (this will delete the original activity)</button></br></br>
+
+  <!-- <button type="button" onclick="location.href='{{ori}}'">See the original gpx</button></br> -->
+  <!-- <button type="button" onclick="location.href='{{smo}}'">See the smoothened gpx</button></br> -->
+
+  <a href='{{ori}}'>See the original gpx</a></br>
+  <a href='{{smo}}'>See the smoothened gpx</a></br>
+
+  {% if graph != '' %} <img src="{{ graph }}" alt="comparison" style="height:628px;"> {% endif %}
+
+
+</body>
+
+
+</html>
