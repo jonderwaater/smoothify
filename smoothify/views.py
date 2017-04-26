@@ -34,7 +34,7 @@ queue = Queue(connection=conn)
 
 def index(request):
 
-    client_id = os.environ['STRAVASMOOTH_ID']
+    client_id = os.environ['SMOOTHIFY_ID']
 
     client = Client()
     
@@ -55,11 +55,11 @@ def token(request):
         return HttpResponse('<a href='+reverse('index')+'>Failed, try again.</a>')
     else :
         client = Client()
-        access_token = client.exchange_code_for_token(client_id=os.environ['STRAVASMOOTH_ID'],
-                                                      client_secret=os.environ['STRAVASMOOTH_SECRET'],
+        access_token = client.exchange_code_for_token(client_id=os.environ['SMOOTHIFY_ID'],
+                                                      client_secret=os.environ['SMOOTHIFY_SECRET'],
                                                       code=code)
 
-        request.session['STRAVASMOOTH_TOKEN'] = access_token
+        request.session['SMOOTHIFY_TOKEN'] = access_token
 
         athlete = client.get_athlete()
         request.session['ATHLETE_FIRSTNAME'] = athlete.firstname
@@ -70,7 +70,7 @@ def token(request):
 
 def mytoken(request):
 
-    return render(request, 'mytoken.html',{'token':request.session['STRAVASMOOTH_TOKEN']})
+    return render(request, 'mytoken.html',{'token':request.session['SMOOTHIFY_TOKEN']})
 
 
 def activity(request):
@@ -91,7 +91,7 @@ def activity(request):
 
 def process(request):
 
-    client = Client(request.session['STRAVASMOOTH_TOKEN'])
+    client = Client(request.session['SMOOTHIFY_TOKEN'])
 
     activity_id = int(request.session['ACTIVITY_ID'])
     activity,client = functions.getactivity(activity_id,client)
@@ -189,7 +189,7 @@ def gpxupload(request):
     gpxfile, title, desc = functions.getgpxinfofilename(gpxfilename)
 
     overwrite = True
-    args=(request.session['STRAVASMOOTH_TOKEN'], gpxfile, title, desc, request.session['ACTIVITY_TYPE'], request.session['ACTIVITY_PRIVATE'], overwrite, request.session['ACTIVITY_ID'],)
+    args=(request.session['SMOOTHIFY_TOKEN'], gpxfile, title, desc, request.session['ACTIVITY_TYPE'], request.session['ACTIVITY_PRIVATE'], overwrite, request.session['ACTIVITY_ID'],)
     job = queue.enqueue(uploadhelper, args)
     request.session['UPLOADJOB_ID'] = job.id
     return HttpResponseRedirect('/wait/')

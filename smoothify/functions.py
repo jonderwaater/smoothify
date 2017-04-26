@@ -11,7 +11,7 @@ def gettoken():
         c = f.readlines()
     for line in c :
         words = line.split("=")
-        if words[0] == "STRAVASMOOTH_TOKEN" :
+        if words[0] == "SMOOTHIFY_TOKEN" :
             token = words[1]
 
     return token
