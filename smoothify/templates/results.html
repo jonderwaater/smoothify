@@ -8,7 +8,7 @@
   {% load staticfiles %}
   <img src="{% static "smoothify_logo.png" %}" alt="smoothify"/></br></br>
 
-  Your activity "<a href='https://www.strava.com/activities/{{ activity_id }}'>{{ activity_name }}"</a> from {{timestamp}} has been processed.</br></br>
+  Your activity "<a href='https://www.strava.com/activities/{{ activity_id }}'>{{ activity_name }}</a>" from {{timestamp}} has been processed.</br></br>
   
   <pre>Distances:</pre>
   <pre>Original on Strava : {{distance}} m</pre>
@@ -17,7 +17,8 @@
 
   </br>
 
-  <button type="button" onclick="location.href='{{up}}'">Upload the processed data to Strava (this will delete the original activity)</button></br></br>
+  <button type="button" onclick="location.href='{{up}}'">Upload the processed data to Strava (this will delete the original activity)</button></br>
+  You will lose any already received comments, kudos, attached photos etc. At the moment only location data is saved, so also heartrate data etc. will be lost. See the <a href='https://github.com/jonderwaater/smoothify'>github</a> page for more information.</br></br>
 
   <!-- <button type="button" onclick="location.href='{{ori}}'">See the original gpx</button></br> -->
   <!-- <button type="button" onclick="location.href='{{smo}}'">See the smoothened gpx</button></br> -->
