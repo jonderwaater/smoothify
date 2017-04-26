@@ -8,7 +8,7 @@
   {% load staticfiles %}
   <img src="{% static "smoothify_logo.png" %}" alt="smoothify"/></br></br>
 
-  Your activity "{{ activity_name }}" from {{timestamp}} has been processed.</br></br>
+  Your activity "<a href='https://www.strava.com/activities/{{ activity_id }}'>{{ activity_name }}"</a> from {{timestamp}} has been processed.</br></br>
   
   <pre>Distances:</pre>
   <pre>Original on Strava : {{distance}} m</pre>
@@ -26,6 +26,11 @@
   <a href='{{smo}}'>See the smoothened gpx</a></br>
 
   {% if graph != '' %} <img src="{{ graph }}" alt="comparison" style="height:628px;"> {% endif %}
+
+  </br>
+  </br>
+  </br>
+<img src="{% static "api_logo_pwrdBy_strava_stack_light.png" %}" alt="strava"/>
 
 
 </body>

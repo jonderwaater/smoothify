@@ -179,7 +179,7 @@ def overview(request):
     change_old  = '{0:.2f}'.format(change_old)
     change_new  = '{0:.2f}'.format(change_new)
 
-    return render(request, "results.html",{'activity_name':request.session['ACTIVITY_NAME'],'timestamp':timestamp,'distance':distance,'distance_old':distance_old,'distance_new':distance_new,'change_old':change_old,'change_new':change_new,'ori':reverse('gpxin'),'smo':reverse('gpxout'),'up':reverse('gpxupload'),'graph':reverse('image')})
+    return render(request, "results.html",{'activity_id':request.session['ACTIVITY_ID'],'activity_name':request.session['ACTIVITY_NAME'],'timestamp':timestamp,'distance':distance,'distance_old':distance_old,'distance_new':distance_new,'change_old':change_old,'change_new':change_new,'ori':reverse('gpxin'),'smo':reverse('gpxout'),'up':reverse('gpxupload'),'graph':reverse('image')})
 
 
 
