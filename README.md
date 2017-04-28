@@ -24,7 +24,7 @@ When your activity is uploaded to your account, run the software in a shell:
 ````bash
 $ smoothen
 ````
-Your original activity will be replaced automatically. 
+Your original activity will be replaced automatically. (Update 24.04.2017: changed permissions by Strava broke the functionality of this python program. Use the [web interface](https://smoothify.herokuapp.com/) and delete the activity on Strava before clicking the upload button on Smoothify to replace your activity.)
 
 In the directory where you run smoothen the following files are created:  
 [Activity id].gpx           - the gpx file of your original activity  
