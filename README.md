@@ -17,7 +17,7 @@ If you want to run the program on your own device follow the steps below.
 pip install git+https://github.com/jonderwaater/smoothify  
 ````
 
-You need an access token. You can generate it on https://smoothify.herokuapp.com/. Store the token in ~/.smoothify as described above the generated token.
+You need an access token. You can generate it on http://waaterbron.hopto.org:8080. Store the token in ~/.smoothify as described above the generated token.
 
 ## General usage
 When your activity is uploaded to your account, run the software in a shell:
