@@ -7,7 +7,7 @@ If you suffer from jittery GPS data and from Strava consequently overestimating 
 The activity data is exported from your Strava account to a gpx file and re-uploaded after applying a smoothening algorithm.
 
 ## Web interface
-https://smoothify.herokuapp.com/  
+http://waaterbron.hopto.org:8080
 Follow the link to smoothen your data through the web interface. The generated information is not stored in a database.
 If you want to run the program on your own device follow the steps below.
 
