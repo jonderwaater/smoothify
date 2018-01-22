@@ -7,7 +7,7 @@ If you suffer from jittery GPS data and from Strava consequently overestimating 
 The activity data is exported from your Strava account to a gpx file and re-uploaded after applying a smoothening algorithm.
 
 ## Web interface
-http://waaterbron.hopto.org:8080
+http://waaterbron.hopto.org/smoothify
 Follow the link to smoothen your data through the web interface. The generated information is not stored in a database.
 If you want to run the program on your own device follow the steps below.
 
@@ -17,14 +17,14 @@ If you want to run the program on your own device follow the steps below.
 pip install git+https://github.com/jonderwaater/smoothify  
 ````
 
-You need an access token. You can generate it on http://waaterbron.hopto.org:8080. Store the token in ~/.smoothify as described above the generated token.
+You need an access token. You can generate it on http://waaterbron.hopto.org/smoothify. Store the token in ~/.smoothify as described above the generated token.
 
 ## General usage
 When your activity is uploaded to your account, run the software in a shell:
 ````bash
 $ smoothen
 ````
-Your original activity will be replaced automatically. (Update 24.04.2017: changed permissions by Strava broke the functionality of this python program. Use the [web interface](http://waaterbron.hopto.org:8080) and delete the activity on Strava before clicking the upload button on Smoothify to replace your activity.)
+Your original activity will be replaced automatically. (Update 24.04.2017: changed permissions by Strava broke the functionality of this python program. Use the [web interface](http://waaterbron.hopto.org/smoothify) and delete the activity on Strava before clicking the upload button on Smoothify to replace your activity.)
 
 In the directory where you run smoothen the following files are created:  
 [Activity id].gpx           - the gpx file of your original activity  
